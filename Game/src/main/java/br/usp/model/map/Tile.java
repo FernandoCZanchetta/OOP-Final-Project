@@ -4,30 +4,32 @@
  */
 package br.usp.model.map;
 
-import static br.usp.util.GameConstants.TILE_SIZE;
-import br.usp.util.Position;
 import br.usp.view.SpriteManager;
 import br.usp.view.render.GraphicsAPI;
-import br.usp.view.render.Renderable;
 import java.awt.Image;
+import javax.vecmath.Point2d;
 
 /**
  *
  * @author Fernando
  */
-public class Tile {//implements Renderable {
+public class Tile {
     private final TileType type;
     private boolean visible;
-    //private Position position;
+    private Point2d position;
 
-    public Tile(TileType type){ //,Position position) {
-        //this.position = position;
+    public Tile(TileType type, Point2d position) {
+        this.position = position;
         this.type = type;
         this.visible = true;    //MUDAR DPS PRO NEGÓCIO DO INVISIVEL E MAPA OFUSCADO
     }
 
     public TileType getType() {
         return type;
+    }
+    
+    public Point2d getPosition() {
+        return position;
     }
 
     public boolean isVisible() {
@@ -38,21 +40,19 @@ public class Tile {//implements Renderable {
         this.visible = visible;
     }
 
-    //CONSERTAR SPRITES
-//    @Override
-//    public void render(GraphicsAPI g) {
-//        if(!visible) {
-//            return;
-//        }
-//        
-//        String spriteName = switch (type) {
-//            case WALL -> "wall";
-//            case FLOOR -> "floor";
-//            default -> "null";
-//        };
-//        
-//        Image sprite = SpriteManager.getSprite(spriteName);
-//        Position tilePos = new Position(position.getRow() * TILE_SIZE, position.getColumn() * TILE_SIZE);
-//        g.drawSprite(sprite, position);
-//    }
+    public void render(GraphicsAPI g, TileType type) {
+        if(!visible) {
+            return;
+        }
+        
+        String spriteName = switch (type) {
+            case WALL -> "wall";
+            case FLOOR -> "floor";
+            default -> "null";
+        };
+        
+        Image sprite = SpriteManager.getSprite(spriteName);
+        Point2d tilePos = new Point2d(position.getX(), position.getY());
+        g.drawSprite(sprite, tilePos);
+    }
 }

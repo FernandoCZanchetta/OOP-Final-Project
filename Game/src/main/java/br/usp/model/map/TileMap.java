@@ -5,7 +5,8 @@
 package br.usp.model.map;
 
 import java.awt.Dimension;
-import javax.vecmath.Point2i;
+import java.util.ArrayList;
+import javax.vecmath.Point2d;
 
 /**
  *
@@ -13,11 +14,11 @@ import javax.vecmath.Point2i;
  */
 public class TileMap {
     private final Dimension d;
-    private final Tile[][] tiles;
+    private final ArrayList<Tile> tiles;
 
     public TileMap(Dimension d) {
         this.d = d;
-        this.tiles = new Tile[d.height][d.width]; //VER SE VOU USAR UM LIMITE MAXIMO COMO ESTA NAS CONST OU SE VAI SER LIVRE (LEMBRAR Q TEM LIMITE NO POS)
+        this.tiles = new ArrayList<>(); //VER SE VOU USAR UM LIMITE MAXIMO COMO ESTA NAS CONST OU SE VAI SER LIVRE (LEMBRAR Q TEM LIMITE NO POS)
 
         //TO-DO: IMPLEMENTAR UM MAPA DECENTE!!!!!!!!!!!!!!!!!!!
         
@@ -29,16 +30,16 @@ public class TileMap {
         for (int y = 0; y < d.height; y++) {
             for (int x = 0; x < d.width; x++) {
                 if (x == 0 || y == 0 || x == d.width - 1 || y == d.height - 1 || (x == 4 && y > 1)) {
-                    tiles[y][x] = new Tile(TileType.WALL); //Adiciona as paredes da borda
+                    tiles.add(new Tile(TileType.WALL, new Point2d(x, y))); //Adiciona as paredes da borda
                 } else {
-                    tiles[y][x] = new Tile(TileType.FLOOR); //Adiciona o chão normal
+                    tiles.add(new Tile(TileType.FLOOR, new Point2d(x, y))); //Adiciona o chão normal
                 }
             }
         }
     }
     
-    public Tile getTile(Point2i coordinate) {
-        return tiles[coordinate.y][coordinate.x];
+    public ArrayList<Tile> getTiles() {
+        return tiles;
     }
 
     public Dimension getDimension() {
