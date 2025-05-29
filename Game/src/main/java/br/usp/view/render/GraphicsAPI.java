@@ -4,13 +4,11 @@
  */
 package br.usp.view.render;
 
-import br.usp.util.Position;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
-
-import javax.vecmath.Point2i;
+import javax.vecmath.Point2d;
 
 /**
  *
@@ -19,11 +17,11 @@ import javax.vecmath.Point2i;
 public interface GraphicsAPI {
     public void createBuffer(int width, int height);
 
-    public void drawRect(Position position, int width, int height, Color color);
+    public void drawRect(Point2d position, int width, int height, Color color);
 
-    public void drawSprite(Image image, Position position);
+    public void drawSprite(Image image, Point2d position);
 
-    public void drawText(String text, Position position, Color color, Font font);
+    public void drawText(String text, Point2d position, Color color, Font font);
 
     public void flushBuffer(Graphics2D g);
 }

@@ -4,8 +4,9 @@
  */
 package br.usp.view.render;
 
-import static br.usp.util.GameConstants.*;
-import br.usp.util.Position;
+import static br.usp.util.GameConstants.TILE_SIZE;
+import static br.usp.util.GameConstants.WINDOW_HEIGHT;
+import static br.usp.util.GameConstants.WINDOW_WIDTH;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -13,8 +14,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import javax.swing.WindowConstants;
-import javax.vecmath.Point2i;
+import javax.vecmath.Point2d;
 
 /**
  *
@@ -46,26 +46,44 @@ public class SwingGraphicsAPI implements GraphicsAPI {
     }
 
     @Override
-    public void drawRect(Position position, int width, int height, Color color) {
+    public void drawRect(Point2d position, int width, int height, Color color) {
         if (bufferGraphics != null) {
             bufferGraphics.setColor(color);
-            bufferGraphics.fillRect(position.getColumn() * TILE_SIZE, position.getRow() * TILE_SIZE, width, height);
+            Point2d camera_origin = new Point2d(Camera.getCameraInstance().getPosition());
+            Point2d win_center = new Point2d(WINDOW_WIDTH, WINDOW_HEIGHT);
+            win_center.scale(0.5 / TILE_SIZE);
+            camera_origin.sub(win_center);
+            Point2d pos = new Point2d(position);
+            pos.sub(camera_origin);
+            bufferGraphics.fillRect((int) Math.round(pos.getX()) * TILE_SIZE, (int) Math.round(pos.getY()) * TILE_SIZE, width, height);
         }
     }
 
     @Override
-    public void drawSprite(Image image, Position position) {
+    public void drawSprite(Image image, Point2d position) {
         if (image != null && bufferGraphics != null) {
-            bufferGraphics.drawImage(image, position.getColumn(), position.getRow(), null);
+            Point2d camera_origin = new Point2d(Camera.getCameraInstance().getPosition());
+            Point2d win_center = new Point2d(WINDOW_WIDTH, WINDOW_HEIGHT);
+            win_center.scale(0.5 / TILE_SIZE);
+            camera_origin.sub(win_center);
+            Point2d pos = new Point2d(position);
+            pos.sub(camera_origin);
+            bufferGraphics.drawImage(image, (int) Math.round(pos.getX()) * TILE_SIZE, (int) Math.round(pos.getY()) * TILE_SIZE, null);
         }
     }
 
     @Override
-    public void drawText(String text, Position position, Color color, Font font) {
+    public void drawText(String text, Point2d position, Color color, Font font) {
         if (bufferGraphics != null) {
             bufferGraphics.setColor(color);
             bufferGraphics.setFont(font);
-            bufferGraphics.drawString(text, position.getColumn(), position.getRow());
+            Point2d camera_origin = new Point2d(Camera.getCameraInstance().getPosition());
+            Point2d win_center = new Point2d(WINDOW_WIDTH, WINDOW_HEIGHT);
+            win_center.scale(0.5 / TILE_SIZE);
+            camera_origin.sub(win_center);
+            Point2d pos = new Point2d(position);
+            pos.sub(camera_origin);
+            bufferGraphics.drawString(text, (int) Math.round(pos.getX()), (int) Math.round(pos.getY()));
         }
     }
 

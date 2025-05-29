@@ -4,14 +4,18 @@
  */
 package br.usp.core;
 
-import br.usp.io.InputAPI;
 import br.usp.io.SwingInputAPI;
 import br.usp.model.entity.Hero;
+import br.usp.model.map.Tile;
 import br.usp.model.map.TileMap;
+import br.usp.model.map.TileType;
+import static br.usp.util.GameConstants.GAME_DELTA_TIME;
 import br.usp.view.SpriteManager;
 import br.usp.view.layout.MainFrame;
+import br.usp.view.render.Camera;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
+import javax.vecmath.Point2d;
 
 /**
  *
@@ -24,10 +28,13 @@ public class GameEngine {
     private GameState gameState = GameState.MAIN_MENU;
     private SwingInputAPI input;
     private MainFrame mainFrame;
+    private Camera camera;
     private TileMap tileMap;
     private Hero hero;
     
     private final GameTime gameTime;
+    
+    private boolean was_escape_pressed;
     
     private GameEngine() {
         this.gameTime = new GameTime();
@@ -53,6 +60,7 @@ public class GameEngine {
         this.hero = new Hero(1, 1, 5);
         this.input = new SwingInputAPI();
         this.mainFrame = new MainFrame();
+        this.camera = new Camera();
         startGame();
     }
     
@@ -81,29 +89,46 @@ public class GameEngine {
     }
     
     public void update() {
+        double horizontal_moviment = 0;
+        double vertical_moviment = 0;
+        
         if (gameState != GameState.RUNNING) return;
         
-        if (input.getKeyPressed(KeyEvent.VK_W)) {
-            this.getHero().getPosition().moveUp();
+        if (input.getKeyPressed(KeyEvent.VK_W) || input.getKeyPressed(KeyEvent.VK_UP)) {
+            vertical_moviment--;
             //System.out.println("Moveu para cima!");
         }
-        if (input.getKeyPressed(KeyEvent.VK_S)) {
-            this.getHero().getPosition().moveDown();
+        if (input.getKeyPressed(KeyEvent.VK_S) || input.getKeyPressed(KeyEvent.VK_DOWN)) {
+            vertical_moviment++;
             //System.out.println("Moveu para baixo!");
         }
-        if (input.getKeyPressed(KeyEvent.VK_A)) {
-            this.getHero().getPosition().moveLeft();
+        if (input.getKeyPressed(KeyEvent.VK_A)  || input.getKeyPressed(KeyEvent.VK_LEFT)) {
+            horizontal_moviment--;
             //System.out.println("Moveu para esquerda!");
         }
-        if (input.getKeyPressed(KeyEvent.VK_D)) {
-            this.getHero().getPosition().moveRight();
+        if (input.getKeyPressed(KeyEvent.VK_D)  || input.getKeyPressed(KeyEvent.VK_RIGHT)) {
+            horizontal_moviment++;
             //System.out.println("Moveu para direita!");
         }
-        if (input.getKeyPressed(KeyEvent.VK_ESCAPE)) {
+        Point2d delta_pos = new Point2d(horizontal_moviment, vertical_moviment);
+        delta_pos.scale(5 * GAME_DELTA_TIME); // Velocidade de 5 Tiles por segundo
+        hero.getPosition().add(delta_pos);
+        
+        if (input.getKeyPressed(KeyEvent.VK_ESCAPE) && !was_escape_pressed) {
             this.pauseGame();
             mainFrame.pauseGame();
             System.out.println("Game pausado!");
         }
+        
+        was_escape_pressed = input.getKeyPressed(KeyEvent.VK_ESCAPE);
+        
+        for(Tile t : tileMap.getTiles()) {
+            if(t.getType() == TileType.WALL) {
+                hero.checkCharacterCollision(t);
+            }
+        }
+        
+        camera.follow(hero.getPosition());
     }
     
     public MainFrame getMainFrame() {

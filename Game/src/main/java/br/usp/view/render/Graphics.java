@@ -5,8 +5,7 @@
 package br.usp.view.render;
 
 import br.usp.core.GameEngine;
-import br.usp.util.Position;
-import javax.vecmath.Point2i;
+import javax.vecmath.Point2d;
 
 /**
  *
@@ -33,7 +32,7 @@ public class Graphics {
         //}
 
         // Exemplo: desenha um retângulo fixo para debug
-        graphicsAPI.drawRect(new Position(20, 20), 20, 20, java.awt.Color.CYAN);
+        graphicsAPI.drawRect(new Point2d(20, 20), 20, 20, java.awt.Color.CYAN);
 
         graphicsAPI.flushBuffer(g);
     }
