@@ -4,13 +4,11 @@
  */
 package br.usp.model.entity;
 
-import static br.usp.util.GameConstants.*;
-import br.usp.util.Position;
 import br.usp.view.SpriteManager;
 import br.usp.view.render.GraphicsAPI;
 import br.usp.view.render.Renderable;
-import java.awt.Color;
 import java.awt.Image;
+import javax.vecmath.Point2d;
 
 /**
  *
@@ -24,11 +22,12 @@ public class Hero extends GameCharacter implements Renderable {
 
     @Override
     public void render(GraphicsAPI g) {
-        //VER O PROBLEMA DA SPRITE
-        //Image sprite = SpriteManager.getSprite("hero_steady");
-        //Position tilePos = new Position(position.getRow() * TILE_SIZE, position.getColumn() * TILE_SIZE);
-        //g.drawSprite(sprite, tilePos);
-        g.drawRect(position, TILE_SIZE, TILE_SIZE, Color.RED);
+        Image sprite = SpriteManager.getSprite("hero_steady");
+        Point2d tilePos = new Point2d(position.getX(), position.getY());
+        g.drawSprite(sprite, tilePos);
+        
+        /*FOR DEBUGGING POURPOSES*/
+        //g.drawRect(position, TILE_SIZE, TILE_SIZE, Color.RED);
     }
     
     @Override
