@@ -22,8 +22,10 @@ public final class GameConstants {
     public static final int WINDOW_WIDTH = 960;
     public static final int WINDOW_HEIGHT = 720;
 
-    // Taxa FPS
+    // Taxa FPS e Delta Time
     public static final int GAME_FPS = 60;
+    public static final double GAME_DELTA_TIME = 1.0 / GAME_FPS;
+    
     
     // Player
     public static final int HERO_MAX_HP = 5;
