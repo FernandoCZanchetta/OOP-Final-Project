@@ -11,20 +11,13 @@ import br.usp.model.entity.Hero;
 import br.usp.model.map.Tile;
 import br.usp.model.map.TileMap;
 import static br.usp.util.GameConstants.*;
-import br.usp.util.Position;
 import br.usp.view.layout.MainFrame;
-import br.usp.view.render.Graphics;
-import br.usp.view.render.GraphicsAPI;
 import br.usp.view.render.SwingGraphicsAPI;
-import java.awt.Color;
 //import br.usp.view.render.SwingGraphicsAPI;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
-import javax.swing.Timer;
-import javax.vecmath.Point2i;
 
 /**
  *
@@ -70,25 +63,12 @@ public class GamePanel extends JPanel {
         TileMap tileMap = engine.getTileMap();
         Hero hero = engine.getHero();
 
-        for (int y = 0; y < tileMap.getHeight(); y++) {
-            for (int x = 0; x < tileMap.getWidth(); x++) {
-                Tile tile = tileMap.getTile(new Point2i(x, y));
-                if (!tile.isVisible()) continue;
-                
-                //QUANDO TIVER SPRITE
-                //tile.render(graphicsAPI);
-                
-                Color color = switch (tile.getType()) {
-                    case WALL -> Color.DARK_GRAY;
-                    case FLOOR -> Color.LIGHT_GRAY;
-                    default -> Color.BLACK; //VER SE DÁ PRA REMOVER ISSO
-                };
-                
-                Position pos = new Position(y, x);
-                graphicsAPI.drawRect(pos, TILE_SIZE, TILE_SIZE, color);
-                //g.fillRect(x * TileMap.TILE_SIZE, y * TileMap.TILE_SIZE, TileMap.TILE_SIZE, TileMap.TILE_SIZE);
-            }
+        for(Tile tile : tileMap.getTiles()) {
+            if (!tile.isVisible()) continue;
+            
+            tile.render(graphicsAPI, tile.getType());
         }
+        
         
         //LEMBRAR Q O PROF QUER UM ARRAYLIST COM O HERO NO ZERO PARA RENDIZAÇAO
         // Player
