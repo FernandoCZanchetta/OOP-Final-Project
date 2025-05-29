@@ -6,6 +6,8 @@ package br.usp.core;
 
 import br.usp.io.SwingInputAPI;
 import br.usp.model.entity.Hero;
+import br.usp.model.map.MapData;
+import br.usp.model.map.MapManager;
 import br.usp.model.map.Tile;
 import br.usp.model.map.TileMap;
 import br.usp.model.map.TileType;
@@ -15,6 +17,7 @@ import br.usp.view.layout.MainFrame;
 import br.usp.view.render.Camera;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import javax.vecmath.Point2d;
 
 /**
@@ -30,6 +33,7 @@ public class GameEngine {
     private MainFrame mainFrame;
     private Camera camera;
     private TileMap tileMap;
+    private MapData mapData;
     private Hero hero;
     
     private final GameTime gameTime;
@@ -56,8 +60,15 @@ public class GameEngine {
     }
     
     public void run() {
-        this.tileMap = new TileMap(new Dimension(20, 15));
-        this.hero = new Hero(1, 1, 5);
+        try {
+            MapManager.preloadAllMaps("maps");                         //IMPLEMENTAR TROCAR OS MAPAS DE VEZ EM QUANDO
+        } catch (IOException ex) {
+            System.out.println("Problema na leitura dos arquivos dos mapas!");
+        }
+        this.mapData = MapManager.getMapData("map01");
+        this.tileMap = new TileMap(new Dimension(30, 20));
+        this.tileMap.loadFromData(mapData);
+        this.hero = new Hero((int) Math.round(mapData.getHeroSpawnPoint().getX()), (int) Math.round(mapData.getHeroSpawnPoint().getY()), 5);
         this.input = new SwingInputAPI();
         this.mainFrame = new MainFrame();
         this.camera = new Camera();

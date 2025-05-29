@@ -26,6 +26,23 @@ public class TileMap {
 
     }
 
+    public void loadFromData(MapData data) {
+        tiles.clear();
+        for (int y = 0; y < data.getHeight(); y++) {
+            for (int x = 0; x < data.getWidth(); x++) {
+                TileType type = switch (data.getTiles()[y][x]) {
+                    case 0 -> TileType.FLOOR;
+                    case 1 -> TileType.WALL;
+                    case 2 -> TileType.HEART;
+                    case 3 -> TileType.MAP;
+                    case 4 -> TileType.KEY;
+                    default -> TileType.FLOOR;
+                };
+                tiles.add(new Tile(type, new Point2d(x, y)));
+            }
+        }
+    }
+    
     private void generateSampleMap() {
         for (int y = 0; y < d.height; y++) {
             for (int x = 0; x < d.width; x++) {
