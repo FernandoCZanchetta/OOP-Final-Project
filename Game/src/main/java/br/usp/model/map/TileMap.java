@@ -6,6 +6,7 @@ package br.usp.model.map;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.vecmath.Point2d;
 
 /**
@@ -26,19 +27,48 @@ public class TileMap {
 
     }
 
-    public void loadFromData(MapData data) {
+    public void loadFromData(MapData data, MapRegionManager regionManager) {
         tiles.clear();
         for (int y = 0; y < data.getHeight(); y++) {
             for (int x = 0; x < data.getWidth(); x++) {
                 TileType type = switch (data.getTiles()[y][x]) {
                     case 0 -> TileType.FLOOR;
                     case 1 -> TileType.WALL;
-                    case 2 -> TileType.HEART;
-                    case 3 -> TileType.MAP;
-                    case 4 -> TileType.KEY;
+                    case 2 -> TileType.DOOR;
+                    case 3 -> TileType.HEART;
+                    case 4 -> TileType.MAP;
+                    case 5 -> TileType.KEY;
                     default -> TileType.FLOOR;
                 };
-                tiles.add(new Tile(type, new Point2d(x, y)));
+                
+                Tile tile = new Tile(type, new Point2d(x, y));
+                
+                //IMPLEMENTAR DIREITO O NEGOCIO DA REGIAO DPS
+                //int regionId = data.getRegionIds()[y][x];
+                //regionManager.getRegion(regionId).addTile(tile);
+                
+                //tile.setVisible(regionManager.getRegion(regionId).isUnlocked());
+                tiles.add(tile);
+            }
+        }
+        
+        if(data.getDoorMetadata() != null) {
+            for (Map<String, Object> doorMeta : data.getDoorMetadata()) {
+                int x = (int) doorMeta.get("x");
+                int y = (int) doorMeta.get("y");
+                String keyId = (String) doorMeta.get("keyId");
+
+                // Encontra o tile correspondente
+                for (Tile tile : tiles) {
+                    if (tile.getPosition().getX() == x && tile.getPosition().getY() == y) {
+                        if (tile.getType() == TileType.DOOR) {
+                            tile.changeId(keyId); // Armazena o ID da chave nessa porta
+                        } else {
+                            System.out.println("Aviso: metadado de porta em tile que não é DOOR (" + x + "," + y + ")");
+                        }
+                        break;
+                    }
+                }
             }
         }
     }

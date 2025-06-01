@@ -5,6 +5,8 @@
 package br.usp.model.map;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import javax.vecmath.Point2d;
 
 /**
@@ -15,7 +17,9 @@ public class MapData {
     private int width;
     private int height;
     private Integer[][] tiles;
+    private Integer[][] regionIds;
     private Point2d heroSpawnPoint;
+    private List<Map<String, Object>> doorMetadata; 
 
     public int getWidth() {
         return width;
@@ -29,7 +33,15 @@ public class MapData {
         return tiles;
     }
 
+    public Integer[][] getRegionIds() {
+        return regionIds;
+    }
+    
     public Point2d getHeroSpawnPoint() {
         return heroSpawnPoint;
+    }
+    
+    public List<Map<String, Object>> getDoorMetadata() {
+        return doorMetadata;
     }
 }

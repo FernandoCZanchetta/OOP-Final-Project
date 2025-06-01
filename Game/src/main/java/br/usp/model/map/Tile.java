@@ -14,9 +14,10 @@ import javax.vecmath.Point2d;
  * @author Fernando
  */
 public class Tile {
-    private final TileType type;
-    private boolean visible;
+    private TileType type;
     private Point2d position;
+    private String Id = null;              // Utilizado em Tiles Especiais (Doors)
+    private boolean visible;
 
     public Tile(TileType type, Point2d position) {
         this.position = position;
@@ -28,10 +29,22 @@ public class Tile {
         return type;
     }
     
+    public void changeType(TileType newType) {
+        this.type = newType;
+    }
+    
     public Point2d getPosition() {
         return position;
     }
 
+    public String getId() {
+        return Id;
+    }
+    
+    public void changeId(String newID) {
+        this.Id = newID;
+    }
+    
     public boolean isVisible() {
         return visible;
     }
@@ -48,6 +61,7 @@ public class Tile {
         String spriteName = switch (type) {
             case WALL -> "wall";
             case FLOOR -> "floor";
+            case DOOR -> "door";
             default -> "null";
         };
         

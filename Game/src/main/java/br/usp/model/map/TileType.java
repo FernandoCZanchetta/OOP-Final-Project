@@ -11,7 +11,8 @@ package br.usp.model.map;
 public enum TileType {
     FLOOR,
     WALL,
+    DOOR,
     HEART,
     MAP,
-    KEY
+    KEY //TIRAR DAQUI
 }
