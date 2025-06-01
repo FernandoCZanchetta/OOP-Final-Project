@@ -4,23 +4,25 @@
  */
 package br.usp.model.entity;
 
+import br.usp.core.GameEngine;
+import br.usp.model.GameObject;
 import br.usp.model.map.Tile;
-import static br.usp.util.GameConstants.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import javax.vecmath.Point2d;
 
 /**
  *
  * @author Fernando
  */
-public abstract class GameCharacter implements Serializable {
-    protected Point2d position;
+public abstract class GameCharacter extends GameObject implements Serializable {
     protected int maxHp;
     protected int currentHp;
     //ADICIONAR IMAGEM E TALS E OQ FALTAR DO EX DO PROFESSOR
     
     public GameCharacter(int x, int y, int maxHp) {
-        this.position = new Point2d(x, y);
+        super.position = new Point2d(x, y);
         this.maxHp = maxHp;
         this.currentHp = maxHp;
     }
@@ -53,7 +55,7 @@ public abstract class GameCharacter implements Serializable {
         position.add(new Point2d(dx, dy));
     }
     
-    public void checkCharacterCollision(Tile tile) {
+    public boolean checkCharacterCollision(Tile tile) {
         Point2d boundingBox = new Point2d(1, 1);
         boundingBox.scale(0.5);
         
@@ -74,7 +76,7 @@ public abstract class GameCharacter implements Serializable {
         lcut_corner_diff.sub(char_lower_left_corner);                                       // Calcula a diferença entre as quintas ? da imagem e ? do mundo
         
         if(lcut_corner_diff.getX() < 0 || lcut_corner_diff.getY() < 0 || uclt_corner_diff.getX() > 0 || uclt_corner_diff.getY() > 0) {
-            return;
+            return false;
         }
         
         Point2d collision_vector = new Point2d(0, 0);
@@ -97,7 +99,9 @@ public abstract class GameCharacter implements Serializable {
           collision_vector.setY(collision_handling_vector.getY());
         
         position.add(collision_vector);
+        return true;
     }
     
-    public abstract void update();  // Comportamento por tick, pode ser sobrescrito
+    @Override
+    public abstract void update(GameEngine engine);  // Comportamento por tick, pode ser sobrescrito
 }
