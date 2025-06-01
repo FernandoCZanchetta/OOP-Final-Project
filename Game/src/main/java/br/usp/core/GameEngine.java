@@ -5,9 +5,16 @@
 package br.usp.core;
 
 import br.usp.io.SwingInputAPI;
+//import br.usp.model.GameObject;
 import br.usp.model.entity.Hero;
+import br.usp.model.items.ItemType;
+import br.usp.model.items.Key;
+//import br.usp.model.items.Item;
+//import br.usp.model.items.ItemMap;
+//import br.usp.model.items.ItemType;
 import br.usp.model.map.MapData;
 import br.usp.model.map.MapManager;
+import br.usp.model.map.MapRegionManager;
 import br.usp.model.map.Tile;
 import br.usp.model.map.TileMap;
 import br.usp.model.map.TileType;
@@ -32,7 +39,9 @@ public class GameEngine {
     private SwingInputAPI input;
     private MainFrame mainFrame;
     private Camera camera;
+    private MapRegionManager mapRegionManager;
     private TileMap tileMap;
+    //private ItemMap itemMap;
     private MapData mapData;
     private Hero hero;
     
@@ -54,9 +63,13 @@ public class GameEngine {
     
     public void loadSprites() {
         //ADICIONAR OUTRAS SPRITES AQUI E VER SE DÁ DE ANIMAR ELAS
+        /*Game Character Sprites*/
         SpriteManager.loadSprite("hero_steady", "sprites/hero_steady.png");
+        
+        /*Tiles' Sprites*/
         SpriteManager.loadSprite("wall", "sprites/wall.png");
         SpriteManager.loadSprite("floor", "sprites/floor.png");
+        SpriteManager.loadSprite("door", "sprites/door.png");
     }
     
     public void run() {
@@ -67,7 +80,8 @@ public class GameEngine {
         }
         this.mapData = MapManager.getMapData("map01");
         this.tileMap = new TileMap(new Dimension(30, 20));
-        this.tileMap.loadFromData(mapData);
+        this.mapRegionManager = new MapRegionManager();
+        this.tileMap.loadFromData(mapData, mapRegionManager);
         this.hero = new Hero((int) Math.round(mapData.getHeroSpawnPoint().getX()), (int) Math.round(mapData.getHeroSpawnPoint().getY()), 5);
         this.input = new SwingInputAPI();
         this.mainFrame = new MainFrame();
@@ -99,7 +113,7 @@ public class GameEngine {
         gameState = GameState.MAIN_MENU;
     }
     
-    public void update() {
+    public void update() {                      //THIS IS THE MAIN GAME LOOP
         double horizontal_moviment = 0;
         double vertical_moviment = 0;
         
@@ -136,8 +150,25 @@ public class GameEngine {
         for(Tile t : tileMap.getTiles()) {
             if(t.getType() == TileType.WALL) {
                 hero.checkCharacterCollision(t);
+            } else if(t.getType() == TileType.DOOR) {
+                if(hero.checkCharacterCollision(t)) {
+                    if(hero.hasKeyFor(t.getId())) {
+                        t.changeType(TileType.FLOOR);
+                        //FAZER A LOGICA DE REVELAR A REGIAO
+                    } 
+                }
+                
             }
         }
+        
+        //ITENSSSSS
+//        for(Item item : itemMap.getItems()) {
+//            if(item.getType() == ItemType.KEY) {
+//                hero.pickUpKey(key); //DE ONDE VAI VIR ESSA KEY EMMM
+//                MapRegionManager.unlockRegion(...);
+//                t.changeType(TileType.FLOOR);
+//            }
+//        }
         
         camera.follow(hero.getPosition());
     }
