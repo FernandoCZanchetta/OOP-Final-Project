@@ -5,13 +5,13 @@
 package br.usp.core;
 
 import br.usp.io.SwingInputAPI;
-//import br.usp.model.GameObject;
+import br.usp.model.GameObject;
 import br.usp.model.entity.Hero;
 import br.usp.model.items.ItemType;
 import br.usp.model.items.Key;
-//import br.usp.model.items.Item;
-//import br.usp.model.items.ItemMap;
-//import br.usp.model.items.ItemType;
+import br.usp.model.items.Item;
+import br.usp.model.items.ItemMap;
+import br.usp.model.items.ItemType;
 import br.usp.model.map.MapData;
 import br.usp.model.map.MapManager;
 import br.usp.model.map.MapRegionManager;
@@ -41,7 +41,7 @@ public class GameEngine {
     private Camera camera;
     private MapRegionManager mapRegionManager;
     private TileMap tileMap;
-    //private ItemMap itemMap;
+    private ItemMap itemMap;
     private MapData mapData;
     private Hero hero;
     
@@ -67,9 +67,15 @@ public class GameEngine {
         SpriteManager.loadSprite("hero_steady", "sprites/hero_steady.png");
         
         /*Tiles' Sprites*/
-        SpriteManager.loadSprite("wall", "sprites/wall.png");
-        SpriteManager.loadSprite("floor", "sprites/floor.png");
-        SpriteManager.loadSprite("door", "sprites/door.png");
+        SpriteManager.loadSprite("wall", "sprites/tiles/wall.png");
+        SpriteManager.loadSprite("floor", "sprites/tiles/floor.png");
+        SpriteManager.loadSprite("door", "sprites/tiles/door.png");
+        
+        /*Keys' Sprites*/
+        SpriteManager.loadSprite("yellow_key", "sprites/keys/yellow_key.png");
+        SpriteManager.loadSprite("red_key", "sprites/keys/red_key.png");
+        SpriteManager.loadSprite("blue_key", "sprites/keys/blue_key.png");
+        SpriteManager.loadSprite("green_key", "sprites/keys/green_key.png");
     }
     
     public void run() {
@@ -80,8 +86,10 @@ public class GameEngine {
         }
         this.mapData = MapManager.getMapData("map01");
         this.tileMap = new TileMap(new Dimension(30, 20));
+        this.itemMap = new ItemMap();
         this.mapRegionManager = new MapRegionManager();
         this.tileMap.loadFromData(mapData, mapRegionManager);
+        this.itemMap.loadFromData(mapData, mapRegionManager); //PROVAVELMENTE DA PRA TIRAR O MANAGER DAQUI
         this.hero = new Hero((int) Math.round(mapData.getHeroSpawnPoint().getX()), (int) Math.round(mapData.getHeroSpawnPoint().getY()), 5);
         this.input = new SwingInputAPI();
         this.mainFrame = new MainFrame();
@@ -162,13 +170,15 @@ public class GameEngine {
         }
         
         //ITENSSSSS
-//        for(Item item : itemMap.getItems()) {
-//            if(item.getType() == ItemType.KEY) {
-//                hero.pickUpKey(key); //DE ONDE VAI VIR ESSA KEY EMMM
-//                MapRegionManager.unlockRegion(...);
-//                t.changeType(TileType.FLOOR);
-//            }
-//        }
+        for(Item item : itemMap.getItems()) {
+            if(item.getType() == ItemType.KEY) {
+                // COLOCAR O IF DA COLLISION
+                
+                //hero.pickUpKey((Key) item);
+                //MapRegionManager.unlockRegion(...);
+                //item.setVisible(false);
+            }
+        }
         
         camera.follow(hero.getPosition());
     }
@@ -183,6 +193,10 @@ public class GameEngine {
     
     public TileMap getTileMap() {
         return tileMap;
+    }
+    
+    public ItemMap getItemMap() {
+        return itemMap;
     }
 
     public Hero getHero() {
