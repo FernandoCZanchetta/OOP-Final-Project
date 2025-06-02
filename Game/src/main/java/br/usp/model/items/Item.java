@@ -17,10 +17,9 @@ import javax.vecmath.Point2d;
 public abstract class Item extends GameObject {
     private ItemType type;
     private boolean visible;
-    private Point2d position;
 
     public Item(ItemType type, Point2d position) {
-        this.position = position;
+        super.position = position;
         this.type = type;
         this.visible = true;    //VER SE VOU CONTROLAR ASSIM AS SPRITES
     }
@@ -31,10 +30,6 @@ public abstract class Item extends GameObject {
     
     public void changeType(ItemType newType) {
         this.type = newType;
-    }
-    
-    public Point2d getPosition() {
-        return position;
     }
 
     public boolean isVisible() {
