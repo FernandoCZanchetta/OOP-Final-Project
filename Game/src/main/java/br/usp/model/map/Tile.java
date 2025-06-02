@@ -4,8 +4,12 @@
  */
 package br.usp.model.map;
 
+import br.usp.core.GameEngine;
+import br.usp.model.GameObject;
+import static br.usp.util.GameConstants.TILE_SIZE;
 import br.usp.view.SpriteManager;
 import br.usp.view.render.GraphicsAPI;
+import java.awt.Color;
 import java.awt.Image;
 import javax.vecmath.Point2d;
 
@@ -13,14 +17,13 @@ import javax.vecmath.Point2d;
  *
  * @author Fernando
  */
-public class Tile {
+public class Tile extends GameObject {
     private TileType type;
-    private Point2d position;
     private String Id = null;              // Utilizado em Tiles Especiais (Doors)
     private boolean visible;
 
     public Tile(TileType type, Point2d position) {
-        this.position = position;
+        super.position = position;
         this.type = type;
         this.visible = true;    //MUDAR DPS PRO NEGÓCIO DO INVISIVEL E MAPA OFUSCADO
     }
@@ -31,10 +34,6 @@ public class Tile {
     
     public void changeType(TileType newType) {
         this.type = newType;
-    }
-    
-    public Point2d getPosition() {
-        return position;
     }
 
     public String getId() {
@@ -54,10 +53,6 @@ public class Tile {
     }
 
     public void render(GraphicsAPI g, TileType type) {
-        if(!visible) {
-            return;
-        }
-        
         String spriteName = switch (type) {
             case WALL -> "wall";
             case FLOOR -> "floor";
@@ -65,8 +60,28 @@ public class Tile {
             default -> "null";
         };
         
-        Image sprite = SpriteManager.getSprite(spriteName);
         Point2d tilePos = new Point2d(position.getX(), position.getY());
-        g.drawSprite(sprite, tilePos);
+        
+        if(visible) {
+            Image sprite = SpriteManager.getSprite(spriteName);
+            g.drawSprite(sprite, tilePos);
+        } else {
+            Color fogColor = switch (Id.toLowerCase()) {
+                case "red" -> new Color(255, 100, 100, 100);
+                case "blue" -> new Color(100, 100, 255, 100);
+                case "yellow" -> new Color(255, 255, 150, 100);
+                case "green" -> new Color(100, 255, 100, 100);
+                default -> new Color(200, 200, 200, 100);
+            };
+            
+            g.drawRect(tilePos, TILE_SIZE, TILE_SIZE, fogColor);
+        }
+    }
+    
+    
+
+    @Override
+    public void update(GameEngine engine) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
