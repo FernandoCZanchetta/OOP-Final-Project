@@ -13,13 +13,14 @@ import javax.vecmath.Point2d;
  *
  * @author Fernando
  */
-public class MapData {
+public class MapData { //POSSIVELMENTE RENOMEAR PARA LEVEL DATA E REALOCAR!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     private int width;
     private int height;
     private Integer[][] tiles;
     private Integer[][] regionIds;
     private Point2d heroSpawnPoint;
-    private List<Map<String, Object>> doorMetadata; 
+    private List<Map<String, Object>> doorMetadata;
+    private List<Map<String, Object>> itemData; 
 
     public int getWidth() {
         return width;
@@ -43,5 +44,9 @@ public class MapData {
     
     public List<Map<String, Object>> getDoorMetadata() {
         return doorMetadata;
+    }
+    
+    public List<Map<String, Object>> getItemData() {
+        return itemData;
     }
 }
