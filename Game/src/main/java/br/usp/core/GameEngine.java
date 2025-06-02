@@ -5,13 +5,16 @@
 package br.usp.core;
 
 import br.usp.io.SwingInputAPI;
+import br.usp.model.entity.Enemy;
+import br.usp.model.entity.EntityMap;
+import br.usp.model.entity.GameCharacter;
 import br.usp.model.entity.Hero;
 import br.usp.model.items.Item;
 import br.usp.model.items.ItemMap;
 import br.usp.model.items.ItemType;
 import br.usp.model.items.Key;
-import br.usp.model.map.MapData;
-import br.usp.model.map.MapManager;
+import br.usp.model.level.LevelData;
+import br.usp.model.level.LevelManager;
 import br.usp.model.map.MapRegionManager;
 import br.usp.model.map.Tile;
 import br.usp.model.map.TileMap;
@@ -40,7 +43,8 @@ public class GameEngine {
     private MapRegionManager mapRegionManager;
     private TileMap tileMap;
     private ItemMap itemMap;
-    private MapData mapData;
+    private EntityMap entityMap;
+    private LevelData mapData;
     private Hero hero;
     
     private final GameTime gameTime;
@@ -74,21 +78,26 @@ public class GameEngine {
         SpriteManager.loadSprite("red_key", "sprites/keys/red_key.png");
         SpriteManager.loadSprite("blue_key", "sprites/keys/blue_key.png");
         SpriteManager.loadSprite("green_key", "sprites/keys/green_key.png");
+        
+        /*Enemies Sprites*/
+        SpriteManager.loadSprite("melee_enemy", "sprites/enemies/melee_enemy.png");
     }
     
     public void run() {
         try {
-            MapManager.preloadAllMaps("maps");                         //IMPLEMENTAR TROCAR OS MAPAS DE VEZ EM QUANDO
+            LevelManager.preloadAllMaps("maps");                         //IMPLEMENTAR TROCAR OS MAPAS DE VEZ EM QUANDO
         } catch (IOException ex) {
             System.out.println("Problema na leitura dos arquivos dos mapas!");
         }
-        this.mapData = MapManager.getMapData("map01");
+        this.mapData = LevelManager.getMapData("map01");
         this.tileMap = new TileMap(new Dimension(30, 20));
         this.itemMap = new ItemMap();
+        this.entityMap = new EntityMap();
         this.mapRegionManager = new MapRegionManager();
         this.tileMap.loadFromData(mapData, mapRegionManager);
         this.itemMap.loadFromData(mapData, tileMap, mapRegionManager);
-        this.hero = new Hero((int) Math.round(mapData.getHeroSpawnPoint().getX()), (int) Math.round(mapData.getHeroSpawnPoint().getY()), 5);
+        this.entityMap.loadFromData(mapData, tileMap, mapRegionManager);
+        this.hero = Hero.getHeroInstace();
         this.input = new SwingInputAPI();
         this.mainFrame = new MainFrame();
         this.camera = new Camera();
@@ -141,9 +150,7 @@ public class GameEngine {
             horizontal_moviment++;
             //System.out.println("Moveu para direita!");
         }
-        Point2d delta_pos = new Point2d(horizontal_moviment, vertical_moviment);
-        delta_pos.scale(5 * GAME_DELTA_TIME); // Velocidade de 5 Tiles por segundo
-        hero.getPosition().add(delta_pos);
+        hero.move(horizontal_moviment, vertical_moviment, 5 * GAME_DELTA_TIME);     // Velocidade de 5 Tiles por segundo
         
         if (input.getKeyPressed(KeyEvent.VK_ESCAPE) && !was_escape_pressed) {
             this.pauseGame();
@@ -177,6 +184,12 @@ public class GameEngine {
             }
         }
         
+        for(GameCharacter entity : entityMap.getEntities()) {
+            if(entity instanceof Enemy enemy) {
+                enemy.update(this);
+            }
+        }
+        
         camera.follow(hero.getPosition());
     }
     
@@ -194,6 +207,10 @@ public class GameEngine {
     
     public ItemMap getItemMap() {
         return itemMap;
+    }
+    
+    public EntityMap getEntityMap() {
+        return entityMap;
     }
 
     public Hero getHero() {
