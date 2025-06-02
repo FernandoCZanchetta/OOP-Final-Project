@@ -43,11 +43,27 @@ public class TileMap {
                 
                 Tile tile = new Tile(type, new Point2d(x, y));
                 
-                //IMPLEMENTAR DIREITO O NEGOCIO DA REGIAO DPS
-                //int regionId = data.getRegionIds()[y][x];
-                //regionManager.getRegion(regionId).addTile(tile);
+                int regionId = data.getRegionIds()[y][x];
                 
-                //tile.setVisible(regionManager.getRegion(regionId).isUnlocked());
+                String regionColor = switch(regionId) {
+                    case 0 -> "fogless";
+                    case 1 -> "yellow";
+                    case 2 -> "red";
+                    case 3 -> "blue";
+                    case 4 -> "green";
+                    default -> "none";
+                };
+                
+                MapRegion region = regionManager.getRegion(regionColor);
+                if (region == null) {
+                    region = new MapRegion(regionColor);
+                    regionManager.addRegion(region);
+                }
+                region.addTile(tile);
+                
+                tile.setVisible(region.isUnlocked());
+                tile.changeId(regionColor);
+                
                 tiles.add(tile);
             }
         }
