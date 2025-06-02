@@ -14,5 +14,9 @@ import javax.vecmath.Point2d;
 public abstract class GameObject {
     protected Point2d position;
     
+    public Point2d getPosition() {
+        return position;
+    }
+    
     public abstract void update(GameEngine engine);
 }
