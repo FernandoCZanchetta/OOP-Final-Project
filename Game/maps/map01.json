@@ -49,5 +49,8 @@
     "doorMetadata": [
         { "x": 2, "y": 2, "keyId": "red" },
         { "x": 4, "y": 1, "keyId": "blue" }
+    ],
+    "itemData": [
+        { "type": "KEY", "x": 5, "y": 1, "id": "red" }
     ]
 }
