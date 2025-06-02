@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class MapRegionManager {
     private static MapRegionManager instance;
-    private final Map<Integer, MapRegion> regions = new HashMap<>();
+    private final Map<String, MapRegion> regions = new HashMap<>();
     
     public MapRegionManager() {
         instance = this;
@@ -25,16 +25,19 @@ public class MapRegionManager {
     }
     
     public void addRegion(MapRegion region) {
+        if(region.getId().contentEquals("fogless")) {
+            region.unlock();
+        }
         regions.put(region.getId(), region);
     }
     
-    public void unlockRegion(int id) {
+    public void unlockRegion(String id) {
         if (regions.containsKey(id)) {
             regions.get(id).unlock();
         }
     }
     
-    public MapRegion getRegion(int id) {
+    public MapRegion getRegion(String id) {
         return regions.get(id);
     }
 

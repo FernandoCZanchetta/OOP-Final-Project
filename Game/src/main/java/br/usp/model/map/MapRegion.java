@@ -4,6 +4,7 @@
  */
 package br.usp.model.map;
 
+import br.usp.model.items.Item;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,24 +13,35 @@ import java.util.List;
  * @author Fernando
  */
 public class MapRegion {
-    private final int id;
+    private final String id;
     private final List<Tile> tiles;
+    private final List<Item> items;
     private boolean unlocked;
     
-    public MapRegion(int id) {
+    public MapRegion(String id) {
         this.id = id;
         this.tiles = new ArrayList<>();
+        this.items = new ArrayList<>();
         this.unlocked = false;
     }
     
     public void addTile(Tile tile) {
         tiles.add(tile);
     }
+    
+    public void addItem(Item item) {
+        items.add(item);
+    }
 
     public void unlock() {
         unlocked = true;
+        
         for (Tile tile : tiles) {
             tile.setVisible(true);
+        }
+        
+        for (Item item : items) {
+            item.setVisible(true);
         }
     }
     
@@ -41,7 +53,11 @@ public class MapRegion {
         return tiles;
     }
     
-    public int getId() {
+    public List<Item> getItems() {
+        return items;
+    }
+    
+    public String getId() {
         return id;
     }
 }
