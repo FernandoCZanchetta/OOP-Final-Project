@@ -45,7 +45,6 @@
         [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4],
         [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4 , 4]
     ],
-    "heroSpawnPoint": { "x": 1, "y": 1 },
     "doorMetadata": [
         { "x": 2, "y": 2, "keyId": "red" },
         { "x": 6, "y": 1, "keyId": "blue" }
@@ -53,5 +52,9 @@
     "itemData": [
         { "type": "KEY", "x": 5, "y": 1, "id": "red" },
         { "type": "KEY", "x": 1, "y": 7, "id": "blue" }
+    ],
+    "entityData": [
+        { "type": "HERO", "x": 1, "y": 1 },
+        { "type": "MELEE", "x": 4, "y": 1, "direction": "HORIZONTAL", "patrolLength": 3, "moveInterval": 0.5 } 
     ]
 }
