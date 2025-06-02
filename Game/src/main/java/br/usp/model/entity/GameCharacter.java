@@ -6,21 +6,24 @@ package br.usp.model.entity;
 
 import br.usp.core.GameEngine;
 import br.usp.model.GameObject;
+import br.usp.model.SerializableObject;
 import br.usp.model.map.Tile;
-import java.io.Serializable;
+import br.usp.view.render.GraphicsAPI;
+import java.util.Map;
 import javax.vecmath.Point2d;
 
 /**
  *
  * @author Fernando
  */
-public abstract class GameCharacter extends GameObject implements Serializable {
+public abstract class GameCharacter extends GameObject implements SerializableObject {
     protected int maxHp;
     protected int currentHp;
+    private boolean visible;
     //ADICIONAR IMAGEM E TALS E OQ FALTAR DO EX DO PROFESSOR
     
-    public GameCharacter(int x, int y, int maxHp) {
-        super.position = new Point2d(x, y);
+    public GameCharacter(Point2d position, int maxHp) {
+        super.position = new Point2d(position);
         this.maxHp = maxHp;
         this.currentHp = maxHp;
     }
@@ -45,8 +48,18 @@ public abstract class GameCharacter extends GameObject implements Serializable {
         return currentHp <= 0;
     }
     
-    public void move(int dx, int dy) {
-        position.add(new Point2d(dx, dy));
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+    
+    public void move(double dx, double dy, double speed) {
+        Point2d delta_pos = new Point2d(dx, dy);
+        delta_pos.scale(speed);
+        position.add(delta_pos);
     }
     
     public boolean checkCharacterCollision(GameObject object) {
@@ -99,6 +112,11 @@ public abstract class GameCharacter extends GameObject implements Serializable {
         return true;
     }
     
+    public abstract void render(GraphicsAPI g);
+    
     @Override
     public abstract void update(GameEngine engine);  // Comportamento por tick, pode ser sobrescrito
+    
+    @Override
+    public abstract Map<String, Object> serialize();
 }
