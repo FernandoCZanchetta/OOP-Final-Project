@@ -8,8 +8,6 @@ import br.usp.core.GameEngine;
 import br.usp.model.GameObject;
 import br.usp.model.map.Tile;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import javax.vecmath.Point2d;
 
 /**
@@ -25,10 +23,6 @@ public abstract class GameCharacter extends GameObject implements Serializable {
         super.position = new Point2d(x, y);
         this.maxHp = maxHp;
         this.currentHp = maxHp;
-    }
-    
-    public Point2d getPosition() {
-        return position;
     }
 
     public int getMaxHp() {
@@ -55,7 +49,7 @@ public abstract class GameCharacter extends GameObject implements Serializable {
         position.add(new Point2d(dx, dy));
     }
     
-    public boolean checkCharacterCollision(Tile tile) {
+    public boolean checkCharacterCollision(GameObject object) {
         Point2d boundingBox = new Point2d(1, 1);
         boundingBox.scale(0.5);
         
@@ -64,9 +58,9 @@ public abstract class GameCharacter extends GameObject implements Serializable {
         Point2d char_upper_right_corner = new Point2d(position);
         char_upper_right_corner.add(boundingBox);
         
-        Point2d tile_lower_left_corner = new Point2d(tile.getPosition());
+        Point2d tile_lower_left_corner = new Point2d(object.getPosition());
         tile_lower_left_corner.sub(boundingBox);
-        Point2d tile_upper_right_corner = new Point2d(tile.getPosition());
+        Point2d tile_upper_right_corner = new Point2d(object.getPosition());
         tile_upper_right_corner.add(boundingBox);
         
         Point2d uclt_corner_diff = new Point2d(tile_lower_left_corner);
@@ -98,7 +92,10 @@ public abstract class GameCharacter extends GameObject implements Serializable {
         if (Math.abs(collision_handling_vector.getY()) <= Math.abs(collision_handling_vector.getX()))
           collision_vector.setY(collision_handling_vector.getY());
         
-        position.add(collision_vector);
+        if(object instanceof Tile) {
+            position.add(collision_vector);
+        }
+        
         return true;
     }
     
