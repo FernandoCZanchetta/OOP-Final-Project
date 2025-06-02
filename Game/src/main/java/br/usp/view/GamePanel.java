@@ -8,6 +8,9 @@ import br.usp.core.GameEngine;
 import br.usp.core.GameLoop;
 import br.usp.io.SwingInputAPI;
 import br.usp.model.entity.Hero;
+import br.usp.model.items.Item;
+import br.usp.model.items.ItemMap;
+import br.usp.model.items.ItemType;
 import br.usp.model.map.Tile;
 import br.usp.model.map.TileMap;
 import static br.usp.util.GameConstants.*;
@@ -61,12 +64,19 @@ public class GamePanel extends JPanel {
         graphicsAPI.setGraphicsContext(bufferGraphics);
 
         TileMap tileMap = engine.getTileMap();
+        ItemMap itemMap = engine.getItemMap();
         Hero hero = engine.getHero();
 
         for(Tile tile : tileMap.getTiles()) {
             if (!tile.isVisible()) continue;
             
             tile.render(graphicsAPI, tile.getType());
+        }
+        
+        for (Item item : itemMap.getItems()) {
+            if(!item.isVisible()) continue;
+            
+            item.render(graphicsAPI, item.getType());
         }
         
         
