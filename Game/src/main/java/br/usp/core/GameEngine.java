@@ -5,13 +5,11 @@
 package br.usp.core;
 
 import br.usp.io.SwingInputAPI;
-import br.usp.model.GameObject;
 import br.usp.model.entity.Hero;
-import br.usp.model.items.ItemType;
-import br.usp.model.items.Key;
 import br.usp.model.items.Item;
 import br.usp.model.items.ItemMap;
 import br.usp.model.items.ItemType;
+import br.usp.model.items.Key;
 import br.usp.model.map.MapData;
 import br.usp.model.map.MapManager;
 import br.usp.model.map.MapRegionManager;
@@ -89,7 +87,7 @@ public class GameEngine {
         this.itemMap = new ItemMap();
         this.mapRegionManager = new MapRegionManager();
         this.tileMap.loadFromData(mapData, mapRegionManager);
-        this.itemMap.loadFromData(mapData, mapRegionManager); //PROVAVELMENTE DA PRA TIRAR O MANAGER DAQUI
+        this.itemMap.loadFromData(mapData, tileMap, mapRegionManager);
         this.hero = new Hero((int) Math.round(mapData.getHeroSpawnPoint().getX()), (int) Math.round(mapData.getHeroSpawnPoint().getY()), 5);
         this.input = new SwingInputAPI();
         this.mainFrame = new MainFrame();
@@ -162,21 +160,20 @@ public class GameEngine {
                 if(hero.checkCharacterCollision(t)) {
                     if(hero.hasKeyFor(t.getId())) {
                         t.changeType(TileType.FLOOR);
-                        //FAZER A LOGICA DE REVELAR A REGIAO
+                        MapRegionManager.getMapRegionManagerInstance().unlockRegion(t.getId());
                     } 
                 }
                 
             }
         }
         
-        //ITENSSSSS
         for(Item item : itemMap.getItems()) {
             if(item.getType() == ItemType.KEY) {
-                // COLOCAR O IF DA COLLISION
-                
-                //hero.pickUpKey((Key) item);
-                //MapRegionManager.unlockRegion(...);
-                //item.setVisible(false);
+                if(hero.checkCharacterCollision(item)) {
+                    hero.pickUpKey((Key) item);    
+                    item.setVisible(false);
+                    // A região já está sendo desbloqueada pelos Tiles no for anterior
+                } 
             }
         }
         
