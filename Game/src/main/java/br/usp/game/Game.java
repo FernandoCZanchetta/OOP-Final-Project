@@ -5,7 +5,6 @@
 package br.usp.game;
 
 import br.usp.core.GameEngine;
-import br.usp.view.SpriteManager;
 import javax.swing.SwingUtilities;
 
 /**
