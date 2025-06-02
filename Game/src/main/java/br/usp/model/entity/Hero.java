@@ -26,8 +26,10 @@ public class Hero extends GameCharacter implements Renderable {
         super(x, y, maxHp);
     }
 
-    public void pickUpKey(br.usp.model.items.Key key) {
-        inventory.add(key);
+    public void pickUpKey(Key key) {
+        if(!inventory.contains(key)) {
+            inventory.add(key);
+        }
     }
 
     public boolean hasKeyFor(String regionId) {
