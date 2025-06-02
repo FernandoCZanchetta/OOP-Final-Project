@@ -10,7 +10,6 @@ import br.usp.io.SwingInputAPI;
 import br.usp.model.entity.Hero;
 import br.usp.model.items.Item;
 import br.usp.model.items.ItemMap;
-import br.usp.model.items.ItemType;
 import br.usp.model.map.Tile;
 import br.usp.model.map.TileMap;
 import static br.usp.util.GameConstants.*;
@@ -68,7 +67,7 @@ public class GamePanel extends JPanel {
         Hero hero = engine.getHero();
 
         for(Tile tile : tileMap.getTiles()) {
-            if (!tile.isVisible()) continue;
+            //if (!tile.isVisible()) continue;              // Removido para implementar a névoa nas regiões!
             
             tile.render(graphicsAPI, tile.getType());
         }
@@ -95,15 +94,4 @@ public class GamePanel extends JPanel {
         this.setFocusable(true);
         this.requestFocusInWindow();
     }
-    
-    //DEFINITIVAMENTE TIRAR ISSO DAQUI
-    
-    
-//    @Override
-//    protected void paintComponent(java.awt.Graphics g) {
-//        super.paintComponent(g);
-//
-//        Graphics2D g2d = (Graphics2D) g;
-//        //graphics.update(getWidth(), getHeight(), g2d);
-//    }
 }
