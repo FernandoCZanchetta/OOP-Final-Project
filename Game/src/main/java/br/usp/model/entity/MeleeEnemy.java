@@ -44,9 +44,6 @@ public class MeleeEnemy extends Enemy {
     public void update(GameEngine engine) {
         moveTimer += GAME_DELTA_TIME;
         
-        System.out.println(this.patrolOrientation);
-        System.out.println(this.patrolProgress);
-        System.out.println(this.position);
         if (moveTimer >= moveInterval) {
             moveTimer = 0;
 
