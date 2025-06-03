@@ -7,6 +7,7 @@ package br.usp.model.entity;
 import br.usp.core.GameEngine;
 import br.usp.model.GameObject;
 import br.usp.model.SerializableObject;
+import br.usp.model.items.ItemFactory;
 import br.usp.model.items.Key;
 import br.usp.view.SpriteManager;
 import br.usp.view.render.GraphicsAPI;
@@ -30,6 +31,7 @@ public class Hero extends GameCharacter implements Renderable {
     
     public Hero(Point2d position, int maxHp) {
         super(position, maxHp);
+        currentHp = maxHp;
         instance = this;
     }
     
@@ -113,7 +115,7 @@ public class Hero extends GameCharacter implements Renderable {
         List<Map<String, Object>> _invList = (List<Map<String, Object>>) data.get("inventory");
         if(_invList != null) {
             for(Map<String, Object> itemData : _invList) {
-                GameObject item = EntityFactory.loadEntityFromSave(itemData);
+                GameObject item = ItemFactory.loadItemFromSave(itemData);
                 hero.inventory.add(item);
             }
         }
