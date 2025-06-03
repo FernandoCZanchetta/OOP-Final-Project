@@ -20,7 +20,7 @@ public final class GameConstants {
 
     // Tamanho da janela
     public static final int WINDOW_WIDTH = 960;
-    public static final int WINDOW_HEIGHT = 720;
+    public static final int WINDOW_HEIGHT = 768;
 
     // Taxa FPS e Delta Time
     public static final int GAME_FPS = 60;
