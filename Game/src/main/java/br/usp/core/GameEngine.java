@@ -91,7 +91,7 @@ public class GameEngine {
             System.out.println("Problema na leitura dos arquivos dos mapas!");
         }
         this.mapData = LevelManager.getMapData("map01");
-        this.tileMap = new TileMap(new Dimension(30, 20));
+        this.tileMap = new TileMap(new Dimension(mapData.getWidth(), mapData.getHeight()));
         this.itemMap = new ItemMap();
         this.entityMap = new EntityMap();
         this.mapRegionManager = new MapRegionManager();
@@ -106,6 +106,32 @@ public class GameEngine {
         map_width = mapData.getWidth();
         map_height = mapData.getHeight();
         
+        startGame();
+    }
+    
+    public void load(LevelData data) {
+        this.mapData = data;
+        
+        this.tileMap = new TileMap(new Dimension(mapData.getWidth(), mapData.getHeight()));
+        this.itemMap = new ItemMap();
+        this.entityMap = new EntityMap();
+        this.mapRegionManager = new MapRegionManager();
+        
+        
+        this.tileMap.loadFromData(mapData, mapRegionManager);
+        this.itemMap.loadFromData(mapData, tileMap, mapRegionManager);
+        this.entityMap.loadFromSave(mapData, tileMap, mapRegionManager);
+        
+        // Atualiza a instância do hero
+        this.hero = Hero.getHeroInstace();
+        
+        this.input = new SwingInputAPI();
+        this.camera = new Camera();
+        
+        map_width = mapData.getWidth();
+        map_height = mapData.getHeight();
+        
+        // FUTURAMENTE GUARDAR O CRONOMETRO JUNTO NO LEVEL
         startGame();
     }
     
@@ -126,6 +152,12 @@ public class GameEngine {
             this.gameState = GameState.RUNNING;
             gameTime.resume();
         }
+    }
+    
+    public void loadGame(LevelData data) {
+        this.gameState = GameState.RUNNING;
+        // VOLTAR POSICAO DO TIMER ANTERIOR SE DER
+        load(data);
     }
     
     public void resetGame() {
@@ -170,9 +202,9 @@ public class GameEngine {
                 hero.checkCharacterCollision(t);
             } else if(t.getType() == TileType.DOOR) {
                 if(hero.checkCharacterCollision(t)) {
-                    if(hero.hasKeyFor(t.getId())) {
+                    if(hero.hasKeyFor(t.getKeyId())) {
                         t.changeType(TileType.FLOOR);
-                        MapRegionManager.getMapRegionManagerInstance().unlockRegion(t.getId());
+                        MapRegionManager.getMapRegionManagerInstance().unlockRegion(t.getKeyId());
                     } 
                 }
                 
