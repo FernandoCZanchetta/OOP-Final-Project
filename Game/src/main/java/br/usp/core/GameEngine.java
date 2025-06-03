@@ -95,16 +95,17 @@ public class GameEngine {
         this.itemMap = new ItemMap();
         this.entityMap = new EntityMap();
         this.mapRegionManager = new MapRegionManager();
+        
+        this.map_width = mapData.getWidth();
+        this.map_height = mapData.getHeight();
+        
         this.tileMap.loadFromData(mapData, mapRegionManager);
         this.itemMap.loadFromData(mapData, tileMap, mapRegionManager);
         this.entityMap.loadFromData(mapData, tileMap, mapRegionManager);
         this.hero = Hero.getHeroInstace();
         this.input = new SwingInputAPI();
         this.mainFrame = new MainFrame();
-        this.camera = new Camera();
-        
-        map_width = mapData.getWidth();
-        map_height = mapData.getHeight();
+        this.camera = new Camera(this.map_width, this.map_height);
         
         startGame();
     }
@@ -117,6 +118,8 @@ public class GameEngine {
         this.entityMap = new EntityMap();
         this.mapRegionManager = new MapRegionManager();
         
+        this.map_width = mapData.getWidth();
+        this.map_height = mapData.getHeight();
         
         this.tileMap.loadFromData(mapData, mapRegionManager);
         this.itemMap.loadFromData(mapData, tileMap, mapRegionManager);
@@ -126,10 +129,7 @@ public class GameEngine {
         this.hero = Hero.getHeroInstace();
         
         this.input = new SwingInputAPI();
-        this.camera = new Camera();
-        
-        map_width = mapData.getWidth();
-        map_height = mapData.getHeight();
+        this.camera = new Camera(this.map_width, this.map_height);
         
         // FUTURAMENTE GUARDAR O CRONOMETRO JUNTO NO LEVEL
         startGame();
