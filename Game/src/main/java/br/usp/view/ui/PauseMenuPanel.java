@@ -37,8 +37,8 @@ public class PauseMenuPanel extends JPanel {
             
             resumeButton.addActionListener(e -> mainFrame.resumeGame());
             startButton.addActionListener(e -> mainFrame.startGame());
-            //saveButton.addActionListener(e -> ?()); IMPLEMENTAR LÓGICA PARA SALVAR FASE
-            //loadButton.addActionListener(e -> ?()); IMPLEMENTAR LÓGICA PARA CARREGAR FASE
+            saveButton.addActionListener(e -> mainFrame.saveGame());
+            loadButton.addActionListener(e -> mainFrame.loadGame());
             exitButton.addActionListener(e -> System.exit(0));
 
             this.add(Box.createVerticalGlue());

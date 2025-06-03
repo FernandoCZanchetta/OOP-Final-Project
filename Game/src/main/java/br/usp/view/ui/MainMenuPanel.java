@@ -30,7 +30,7 @@ public class MainMenuPanel extends JPanel {
         //TO-DO: DEIXAR BOTÕES BONITOS (startButton.setBorder(new Border());) lá na FACTORY
 
         startButton.addActionListener(e -> mainFrame.startGame());
-        //loadButton.addActionListener(e -> mainFrame.startGame()); IMPLEMENTAR LÓGICA PARA CARREGAR FASE
+        loadButton.addActionListener(e -> mainFrame.loadGame());
         exitButton.addActionListener(e -> System.exit(0));
 
         this.add(Box.createVerticalGlue());
