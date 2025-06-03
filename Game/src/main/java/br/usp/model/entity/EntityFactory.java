@@ -18,12 +18,13 @@ public class EntityFactory {
         String typeStr = (String) data.get("type");
         int x = (int) data.get("x");
         int y = (int) data.get("y");
+        int maxHp = (int) data.getOrDefault("maxHp", 5);
 
         EntityType type = EntityType.valueOf(typeStr);
         Point2d pos = new Point2d(x, y);
                 
         return switch (type) {
-            case HERO -> new Hero(pos, 5);
+            case HERO -> new Hero(pos, maxHp);
 
             case MELEE -> {
                 PatrolDirections direction = PatrolDirections.valueOf(String.valueOf(data.getOrDefault("direction", "NONE")));
