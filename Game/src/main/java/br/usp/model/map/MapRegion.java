@@ -51,6 +51,10 @@ public class MapRegion {
         for (Item item : items) {
             item.setVisible(true);
         }
+        
+        for(GameCharacter entity : entities) {
+            entity.setVisible(true);
+        }
     }
     
     public boolean isUnlocked() {
