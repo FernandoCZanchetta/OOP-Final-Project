@@ -11,6 +11,8 @@ import br.usp.view.SpriteManager;
 import br.usp.view.render.GraphicsAPI;
 import java.awt.Color;
 import java.awt.Image;
+import java.util.HashMap;
+import java.util.Map;
 import javax.vecmath.Point2d;
 
 /**
@@ -25,7 +27,7 @@ public class Tile extends GameObject {
     public Tile(TileType type, Point2d position) {
         super.position = position;
         this.type = type;
-        this.visible = true;    //MUDAR DPS PRO NEGÓCIO DO INVISIVEL E MAPA OFUSCADO
+        this.visible = true;
     }
 
     public TileType getType() {
@@ -78,10 +80,34 @@ public class Tile extends GameObject {
         }
     }
     
-    
-
     @Override
     public void update(GameEngine engine) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> data = new HashMap<>();
+        
+        data.put("x", (int) position.getX());
+        data.put("y", (int) position.getY());
+        data.put("type", type.name());
+        data.put("id", Id);
+        data.put("visible", visible);
+        
+        return data;
+    }
+    
+    public static Tile deserialize(Map<String, Object> data) {
+        int x = (int) data.get("x");
+        int y = (int) data.get("y");
+        TileType type = TileType.valueOf((String) data.get("type"));
+        String id = (String) data.get("id");
+        boolean visible = (boolean) data.get("visible");
+
+        Tile tile = new Tile(type, new Point2d(x, y));
+        tile.changeId(id);
+        tile.setVisible(visible);
+        return tile;
     }
 }
