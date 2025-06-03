@@ -4,6 +4,7 @@
  */
 package br.usp.model.map;
 
+import br.usp.model.level.LevelData;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class TileMap {
 
     }
 
-    public void loadFromData(MapData data, MapRegionManager regionManager) {
+    public void loadFromData(LevelData data, MapRegionManager regionManager) {
         tiles.clear();
         for (int y = 0; y < data.getHeight(); y++) {
             for (int x = 0; x < data.getWidth(); x++) {
@@ -37,7 +38,6 @@ public class TileMap {
                     case 2 -> TileType.DOOR;
                     case 3 -> TileType.HEART;
                     case 4 -> TileType.MAP;
-                    case 5 -> TileType.KEY;
                     default -> TileType.FLOOR;
                 };
                 

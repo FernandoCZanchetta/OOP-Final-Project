@@ -14,5 +14,4 @@ public enum TileType {
     DOOR,
     HEART,
     MAP,
-    KEY //TIRAR DAQUI
 }
