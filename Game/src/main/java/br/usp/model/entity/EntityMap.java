@@ -50,7 +50,7 @@ public class EntityMap {
                 gameEntities.add(currentEntity);
                 
 
-                MapRegion region = regionManager.getRegion(itemTile.getId());
+                MapRegion region = regionManager.getRegion(itemTile.getRegionId());
                 region.addEnemy(currentEntity);
                 
                 currentEntity.setVisible(region.isUnlocked());
@@ -64,7 +64,6 @@ public class EntityMap {
         if(data.getEntityData()!= null) {
             for (Map<String, Object> entityData : data.getEntityData()) {
                 GameCharacter currentEntity = EntityFactory.loadEntityFromSave(entityData);
-                
                 Point2d pos = currentEntity.getPosition();
                 
                 Tile itemTile = null;
@@ -78,7 +77,7 @@ public class EntityMap {
                 gameEntities.add(currentEntity);
                 
 
-                MapRegion region = regionManager.getRegion(itemTile.getId());
+                MapRegion region = regionManager.getRegion(itemTile.getRegionId());
                 region.addEnemy(currentEntity);
                 
                 currentEntity.setVisible(region.isUnlocked());

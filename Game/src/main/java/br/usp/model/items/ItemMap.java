@@ -33,7 +33,7 @@ public class ItemMap {
                 String typeStr = (String) itemData.get("type");
                 int x = (int) itemData.get("x");
                 int y = (int) itemData.get("y");
-                String id = (String) itemData.get("id");
+                String id = (String) itemData.get("regionId");
                 
                 ItemType type = ItemType.valueOf(typeStr);
                 Point2d pos = new Point2d(x, y);
@@ -61,10 +61,14 @@ public class ItemMap {
                 }
                 
 
-                MapRegion region = regionManager.getRegion(itemTile.getId());
+                MapRegion region = regionManager.getRegion(itemTile.getRegionId());
                 region.addItem(currentItem);
                 
-                currentItem.setVisible(region.isUnlocked());
+                if(itemData.containsKey("isVisible") && itemData.get("isVisible") != null) {
+                   currentItem.setVisible((boolean) itemData.get("isVisible"));
+                } else {
+                    currentItem.setVisible(region.isUnlocked());
+                }
             }
         }
     }

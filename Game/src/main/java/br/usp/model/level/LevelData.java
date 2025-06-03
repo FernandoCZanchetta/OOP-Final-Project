@@ -115,7 +115,7 @@ public class LevelData implements SerializableObject {
             int x = (int) tile.getPosition().getX();
             int y = (int) tile.getPosition().getY();
             
-            regionMatrix[y][x] = switch(tile.getId()) {
+            regionMatrix[y][x] = switch(tile.getRegionId()) {
                 case "fogless" -> 0;
                 case "yellow" -> 1;
                 case "red" -> 2;
@@ -134,7 +134,7 @@ public class LevelData implements SerializableObject {
                 Map<String, Object> doorInfo = new HashMap<>();
                 doorInfo.put("x", (int) tile.getPosition().getX());
                 doorInfo.put("y", (int) tile.getPosition().getY());
-                doorInfo.put("regionId", tile.getId());
+                doorInfo.put("keyId", tile.getKeyId());
                 doorData.add(doorInfo);
             }
         }

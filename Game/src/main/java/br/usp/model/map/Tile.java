@@ -21,7 +21,8 @@ import javax.vecmath.Point2d;
  */
 public class Tile extends GameObject {
     private TileType type;
-    private String Id = null;              // Utilizado em Tiles Especiais (Doors)
+    private String keyId = null;              // Utilizado em Tiles Especiais (Doors)
+    private String regionId = null;
     private boolean visible;
 
     public Tile(TileType type, Point2d position) {
@@ -38,12 +39,20 @@ public class Tile extends GameObject {
         this.type = newType;
     }
 
-    public String getId() {
-        return Id;
+    public String getKeyId() {
+        return keyId;
     }
     
-    public void changeId(String newID) {
-        this.Id = newID;
+    public String getRegionId() {
+        return regionId;
+    }
+    
+    public void changeKeyId(String newID) {
+        this.keyId = newID;
+    }
+    
+    public void changeRegionId(String newID) {
+        this.regionId = newID;
     }
     
     public boolean isVisible() {
@@ -68,7 +77,7 @@ public class Tile extends GameObject {
             Image sprite = SpriteManager.getSprite(spriteName);
             g.drawSprite(sprite, tilePos);
         } else {
-            Color fogColor = switch (Id.toLowerCase()) {
+            Color fogColor = switch (regionId.toLowerCase()) {
                 case "red" -> new Color(255, 100, 100, 100);
                 case "blue" -> new Color(100, 100, 255, 100);
                 case "yellow" -> new Color(255, 255, 150, 100);
@@ -92,7 +101,7 @@ public class Tile extends GameObject {
         data.put("x", (int) position.getX());
         data.put("y", (int) position.getY());
         data.put("type", type.name());
-        data.put("id", Id);
+        data.put("regionId", regionId);
         data.put("visible", visible);
         
         return data;
@@ -102,11 +111,11 @@ public class Tile extends GameObject {
         int x = (int) data.get("x");
         int y = (int) data.get("y");
         TileType type = TileType.valueOf((String) data.get("type"));
-        String id = (String) data.get("id");
+        String regionId = (String) data.get("regionId");
         boolean visible = (boolean) data.get("visible");
 
         Tile tile = new Tile(type, new Point2d(x, y));
-        tile.changeId(id);
+        tile.changeRegionId(regionId);
         tile.setVisible(visible);
         return tile;
     }

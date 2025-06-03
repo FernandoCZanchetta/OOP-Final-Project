@@ -7,6 +7,7 @@ package br.usp.model.map;
 import br.usp.model.level.LevelData;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import javax.vecmath.Point2d;
 
@@ -62,13 +63,15 @@ public class TileMap {
                 region.addTile(tile);
                 
                 tile.setVisible(region.isUnlocked());
-                tile.changeId(regionColor);
+                tile.changeRegionId(regionColor);
                 
                 tiles.add(tile);
             }
         }
         
         if(data.getDoorMetadata() != null) {
+            List<MapRegion> currentLockedRegions = new ArrayList<>();
+            
             for (Map<String, Object> doorMeta : data.getDoorMetadata()) {
                 int x = (int) doorMeta.get("x");
                 int y = (int) doorMeta.get("y");
@@ -78,12 +81,19 @@ public class TileMap {
                 for (Tile tile : tiles) {
                     if (tile.getPosition().getX() == x && tile.getPosition().getY() == y) {
                         if (tile.getType() == TileType.DOOR) {
-                            tile.changeId(keyId); // Armazena o ID da chave nessa porta
+                            currentLockedRegions.add(regionManager.getRegion(keyId));
+                            tile.changeKeyId(keyId); // Armazena o ID da chave nessa porta
                         } else {
                             System.out.println("Aviso: metadado de porta em tile que não é DOOR (" + x + "," + y + ")");
                         }
                         break;
                     }
+                }
+            }
+            
+            for (MapRegion region : regionManager.getAllRegions()) {
+                if(!currentLockedRegions.contains(region)) {
+                    region.unlock();
                 }
             }
         }
