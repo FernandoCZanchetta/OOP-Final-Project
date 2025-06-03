@@ -83,14 +83,30 @@ public class MainFrame extends JFrame {
             try {
                 LevelData loadedData = LevelLoader.laodSave(selectedFile.getAbsolutePath());
                 if (loadedData != null) {
-                    //engine.loadLevelFromData(loadedData); // Você implementa isso
-                    System.out.println("Daria para carregar um jogo IMPLEMENTAR NA ENGINE!");
+                    engine.loadGame(loadedData);
                     JOptionPane.showMessageDialog(null, "Jogo carregado com sucesso!");
                 }
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(null, "Erro ao carregar: " + ex.getMessage());
             }
+        } else if (result == JFileChooser.CANCEL_OPTION) {
+            return;
         }
+        
+        for (Component comp : cardPanel.getComponents()) {
+            if (comp instanceof GamePanel) {
+                cardPanel.remove(comp);
+                break;
+            }
+        }
+        
+        GamePanel newGamePanel = new GamePanel(this);
+        cardPanel.add(newGamePanel, GAME_PANEL);
+        
+        this.showPanel(GAME_PANEL);
+        
+        newGamePanel.setFocusable(true);
+        newGamePanel.requestFocusInWindow();
     }
     
     public void saveGame() {
