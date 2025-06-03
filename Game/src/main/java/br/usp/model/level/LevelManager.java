@@ -2,27 +2,35 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package br.usp.model.map;
+package br.usp.model.level;
 
+import br.usp.model.entity.GameCharacter;
+import br.usp.model.items.Item;
+import br.usp.model.level.LevelData;
+import br.usp.model.map.TileMap;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author Fernando
  */
-public class MapManager {
-    private static final HashMap<String, MapData> maps = new HashMap<>();
+public class LevelManager {
+    private static final HashMap<String, LevelData> maps = new HashMap<>();
+    private static final HashMap<String, LevelData> saves = new HashMap<>();
     
     public static void loadMap(String name, String path) throws IOException {
         if (!maps.containsKey(name)) {
-            MapData map = MapLoader.loadMap(path);
+            LevelData map = LevelLoader.loadMap(path);
             maps.put(name, map);
         }
     }
     
-    public static MapData getMapData(String mapName) {
+    public static LevelData getMapData(String mapName) {
         return maps.get(mapName);
     }
     
@@ -37,5 +45,17 @@ public class MapManager {
     
     public void clearMaps() {
         maps.clear();
+    }
+    
+    public static void saveLevel(LevelData data, String path) throws IOException {      
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.writerWithDefaultPrettyPrinter().writeValue(new File(path), data);
+    }
+    
+    public static void loadSave(String name, String path) throws IOException {
+        if (!saves.containsKey(name)) {
+            LevelData save = LevelLoader.laodSave(path);
+            saves.put(name, save);
+        }
     }
 }
