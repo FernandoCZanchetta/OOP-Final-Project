@@ -26,7 +26,6 @@ import br.usp.view.render.Camera;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import javax.vecmath.Point2d;
 
 /**
  *
@@ -48,6 +47,8 @@ public class GameEngine {
     private Hero hero;
     
     private final GameTime gameTime;
+    private int map_width;
+    private int map_height;
     
     private boolean was_escape_pressed;
     
@@ -101,6 +102,10 @@ public class GameEngine {
         this.input = new SwingInputAPI();
         this.mainFrame = new MainFrame();
         this.camera = new Camera();
+        
+        map_width = mapData.getWidth();
+        map_height = mapData.getHeight();
+        
         startGame();
     }
     
@@ -212,13 +217,29 @@ public class GameEngine {
     public EntityMap getEntityMap() {
         return entityMap;
     }
+    
+    public MapRegionManager getMapRegionManager() {
+        return mapRegionManager;
+    }
 
+    public LevelData getLevelData() {
+        return mapData;
+    }
+    
     public Hero getHero() {
         return hero;
     }
     
     public GameTime getGameTime() {
         return gameTime;
+    }
+
+    public int getMapWidth() {
+        return map_width;
+    }
+
+    public int getMapHeight() {
+        return map_height;
     }
     
     public GameState getState() {
