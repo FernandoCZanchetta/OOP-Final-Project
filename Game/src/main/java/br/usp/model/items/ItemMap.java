@@ -4,7 +4,7 @@
  */
 package br.usp.model.items;
 
-import br.usp.model.map.MapData;
+import br.usp.model.level.LevelData;
 import br.usp.model.map.MapRegion;
 import br.usp.model.map.MapRegionManager;
 import br.usp.model.map.Tile;
@@ -25,7 +25,7 @@ public class ItemMap {
         this.gameItems = new ArrayList<>();
     }
 
-    public void loadFromData(MapData data, TileMap map, MapRegionManager regionManager) {
+    public void loadFromData(LevelData data, TileMap map, MapRegionManager regionManager) {
         gameItems.clear();
         
         if(data.getItemData() != null) {
