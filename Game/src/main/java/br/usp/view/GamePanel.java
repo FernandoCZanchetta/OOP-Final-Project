@@ -7,7 +7,8 @@ package br.usp.view;
 import br.usp.core.GameEngine;
 import br.usp.core.GameLoop;
 import br.usp.io.SwingInputAPI;
-import br.usp.model.entity.Hero;
+import br.usp.model.entity.EntityMap;
+import br.usp.model.entity.GameCharacter;
 import br.usp.model.items.Item;
 import br.usp.model.items.ItemMap;
 import br.usp.model.map.Tile;
@@ -64,7 +65,7 @@ public class GamePanel extends JPanel {
 
         TileMap tileMap = engine.getTileMap();
         ItemMap itemMap = engine.getItemMap();
-        Hero hero = engine.getHero();
+        EntityMap entityMap = engine.getEntityMap();
 
         for(Tile tile : tileMap.getTiles()) {
             //if (!tile.isVisible()) continue;              // Removido para implementar a névoa nas regiões!
@@ -78,14 +79,11 @@ public class GamePanel extends JPanel {
             item.render(graphicsAPI, item.getType());
         }
         
-        
-        //LEMBRAR Q O PROF QUER UM ARRAYLIST COM O HERO NO ZERO PARA RENDIZAÇAO
-        // Player
-//        g.setColor(Color.RED);
-//        Position p = hero.getPosition();
-//        g.fillOval(p.getColumn() * TileMap.TILE_SIZE, p.getRow() * TileMap.TILE_SIZE, TileMap.TILE_SIZE, TileMap.TILE_SIZE);
-        
-        hero.render(graphicsAPI);
+        for (GameCharacter entity : entityMap.getEntities()) {
+            if(!entity.isVisible()) continue;
+            
+            entity.render(graphicsAPI);
+        }        
         
         bufferGraphics.dispose();
         
