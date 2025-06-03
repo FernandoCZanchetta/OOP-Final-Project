@@ -66,7 +66,7 @@ public class Key extends Item {
     }
     
     public static Key deserialize(Map<String, Object> data) {
-        ItemType type = (ItemType) data.get("type");
+        ItemType type = (ItemType) ItemType.valueOf((String) data.get("type"));
         int x = (int) data.get("x");
         int y = (int) data.get("y");
         String regionId = (String) data.get("regionId");
