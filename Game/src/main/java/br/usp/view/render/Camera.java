@@ -18,9 +18,20 @@ import javax.vecmath.Point2d;
 public class Camera {
     private static Camera instance;
     private Point2d position;
+    private final int mapWidth;
+    private final int mapHeight;
     
     public Camera() {
-        position = new Point2d(0, 0);
+        this.position = new Point2d(0, 0);
+        this.mapWidth = MAX_MAP_WIDTH;
+        this.mapHeight = MAX_MAP_HEIGHT;
+        instance = this;
+    }
+    
+    public Camera(int mapWidth, int mapHeight) {
+        this.position = new Point2d(0, 0);
+        this.mapWidth = mapWidth;
+        this.mapHeight = mapHeight;
         instance = this;
     }
     
@@ -46,7 +57,7 @@ public class Camera {
         cam_upper_right_corner.add(window_pos);
         
         Point2d map_lower_left_corner = new Point2d(0, 0);
-        Point2d map_upper_right_corner = new Point2d(MAX_MAP_WIDTH, MAX_MAP_HEIGHT);
+        Point2d map_upper_right_corner = new Point2d(mapWidth, mapHeight);
         
         Point2d ll_corner_diff = new Point2d(cam_lower_left_corner);
         ll_corner_diff.sub(map_lower_left_corner);                                      // Calcula a diferença entre as quintas ? da imagem e ? do mundo
