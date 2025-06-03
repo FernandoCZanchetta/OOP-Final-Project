@@ -20,7 +20,6 @@ public abstract class GameCharacter extends GameObject implements SerializableOb
     protected int maxHp;
     protected int currentHp;
     private boolean visible;
-    //ADICIONAR IMAGEM E TALS E OQ FALTAR DO EX DO PROFESSOR
     
     public GameCharacter(Point2d position, int maxHp) {
         super.position = new Point2d(position);
@@ -82,7 +81,7 @@ public abstract class GameCharacter extends GameObject implements SerializableOb
         Point2d lcut_corner_diff = new Point2d(tile_upper_right_corner);
         lcut_corner_diff.sub(char_lower_left_corner);                                       // Calcula a diferença entre as quintas ? da imagem e ? do mundo
         
-        if(lcut_corner_diff.getX() < 0 || lcut_corner_diff.getY() < 0 || uclt_corner_diff.getX() > 0 || uclt_corner_diff.getY() > 0) {
+        if(lcut_corner_diff.getX() <= 0 || lcut_corner_diff.getY() <= 0 || uclt_corner_diff.getX() >= 0 || uclt_corner_diff.getY() >= 0) {
             return false;
         }
         
