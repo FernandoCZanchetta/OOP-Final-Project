@@ -66,7 +66,7 @@ public class GamePanel extends JPanel {
         TileMap tileMap = engine.getTileMap();
         ItemMap itemMap = engine.getItemMap();
         EntityMap entityMap = engine.getEntityMap();
-
+        
         for(Tile tile : tileMap.getTiles()) {
             //if (!tile.isVisible()) continue;              // Removido para implementar a névoa nas regiões!
             
