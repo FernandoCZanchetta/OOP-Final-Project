@@ -28,6 +28,8 @@ import javax.vecmath.Point2d;
 public class Hero extends GameCharacter implements Renderable {
     private static Hero instance;
     private final Set<GameObject> inventory = new HashSet<>();
+    private long lastDamageTime = 0;
+    private final long damageCooldownMillis = 1000;
     
     public Hero(Point2d position, int maxHp) {
         super(position, maxHp);
@@ -57,6 +59,28 @@ public class Hero extends GameCharacter implements Renderable {
         return false;
     }
     
+    public boolean canTakeDamage() {
+        return System.currentTimeMillis() - lastDamageTime > damageCooldownMillis;
+    }
+
+    @Override
+    public void damage(int amount) {
+        if(!canTakeDamage()) return;
+        
+        super.damage(amount);
+        
+        lastDamageTime = System.currentTimeMillis();
+        
+        if(currentHp == 0) {
+            die();
+        }
+    }
+    
+    public void die() {
+        System.out.println("Hero Morreu!");
+        GameEngine.getGameEngineInstance().handleHeroDeath();
+    }
+    
     public boolean canActivatePortal(Set<String> necessaryKeys) {
         Set<String> inventoryKeysString = new HashSet<>();
         
@@ -76,6 +100,14 @@ public class Hero extends GameCharacter implements Renderable {
     @Override
     public boolean isVisible() {
         return true;
+    }
+    
+    public long getLastDamageTime() {
+        return lastDamageTime;
+    }
+    
+    public Set<GameObject> getInventory() {
+        return new HashSet<GameObject>(this.inventory);
     }
     
     @Override
