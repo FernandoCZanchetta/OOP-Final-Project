@@ -4,7 +4,7 @@
  */
 package br.usp.io;
 
-import java.io.File;
+import javax.swing.JFrame;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Point2i;
@@ -14,7 +14,7 @@ import javax.vecmath.Point2i;
  * @author Fernando
  */
 public interface InputAPI {
-    public Point2d getMousePos();
+    public Point2d getMousePos(JFrame screen);
     
     public Point2i getMouseTile();
 
@@ -27,8 +27,4 @@ public interface InputAPI {
     public void subscribeToDND(DNDSubscriber subscriber);
 
     public void unsubscribeToDND(DNDSubscriber subscriber);
-}
-
-interface DNDSubscriber {
-  public void receiveDNDFile(File file);
 }

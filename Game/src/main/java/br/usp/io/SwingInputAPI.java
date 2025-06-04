@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -33,6 +34,7 @@ import javax.vecmath.Point2i;
  * @author Fernando
  */
 public class SwingInputAPI extends JFrame implements InputAPI, KeyListener, MouseListener, DropTargetListener {
+    private static SwingInputAPI instance = null;
     private final Map<Integer, Boolean> keyboard_map = new HashMap<>();
     private Point2d mousePos = new Point2d(0, 0);
     private boolean leftClick = false;
@@ -40,6 +42,17 @@ public class SwingInputAPI extends JFrame implements InputAPI, KeyListener, Mous
     private DropTarget drop_target;
     private ArrayList<DNDSubscriber> dnd_subscribers = new ArrayList<>();
 
+    private SwingInputAPI() {
+    }
+    
+    public static SwingInputAPI getInputAPIInstance() {
+        if(instance == null) {
+            instance = new SwingInputAPI();
+        }
+        
+        return instance;
+    }
+    
     public void attachToComponent(JComponent component) {
         component.addKeyListener(this);
         component.addMouseListener(this);
@@ -50,9 +63,9 @@ public class SwingInputAPI extends JFrame implements InputAPI, KeyListener, Mous
     }
 
     @Override
-    public Point2d getMousePos() {
+    public Point2d getMousePos(JFrame screen) {
         Point pos = MouseInfo.getPointerInfo().getLocation();
-        SwingUtilities.convertPointFromScreen(pos, this);
+        SwingUtilities.convertPointFromScreen(pos, screen);
         return new Point2d(pos.getX(), pos.getY());
     }
     
@@ -151,10 +164,10 @@ public class SwingInputAPI extends JFrame implements InputAPI, KeyListener, Mous
         if (t.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
             dtde.acceptDrop(DnDConstants.ACTION_MOVE);
             try {
-                ArrayList<File> data = (ArrayList<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
-                for (File file : data) {
+                List data = (List) t.getTransferData(DataFlavor.javaFileListFlavor);
+                for (Object file : data) {
                     for (DNDSubscriber sub : dnd_subscribers) {
-                        sub.receiveDNDFile(file);
+                        sub.receiveDNDFile((File) file);
                     }
                 }
                 dtde.dropComplete(true);
