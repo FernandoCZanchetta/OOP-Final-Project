@@ -9,6 +9,7 @@ import static br.usp.util.GameConstants.WINDOW_HEIGHT;
 import static br.usp.util.GameConstants.WINDOW_WIDTH;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -30,6 +31,11 @@ public class SwingGraphicsAPI implements GraphicsAPI {
         this.bufferGraphics = g;
     }
 
+    @Override
+    public FontMetrics getFontMetrics(Font font) {
+        return bufferGraphics.getFontMetrics(font);
+    }
+    
     @Override
     public void createBuffer(int width, int height) {
         if (buffer == null || buffer.getWidth() != width || buffer.getHeight() != height) {
@@ -71,19 +77,31 @@ public class SwingGraphicsAPI implements GraphicsAPI {
             bufferGraphics.drawImage(image, (int) Math.round(pos.getX()) * TILE_SIZE, (int) Math.round(pos.getY()) * TILE_SIZE, null);
         }
     }
+    
+    @Override
+    public void drawImage(Image image, Point2d position, int imageWidth, int imageHeight) {
+        if (image != null && bufferGraphics != null) {
+            bufferGraphics.drawImage(image, (int) position.getX(), (int) position.getY(), imageWidth, imageHeight, null);
+        }
+    }
 
     @Override
-    public void drawText(String text, Point2d position, Color color, Font font) {
+    public void drawText(String text, Point2d position, Color color, Font font, boolean isFixed) {
         if (bufferGraphics != null) {
             bufferGraphics.setColor(color);
             bufferGraphics.setFont(font);
-            Point2d camera_origin = new Point2d(Camera.getCameraInstance().getPosition());
-            Point2d win_center = new Point2d(WINDOW_WIDTH, WINDOW_HEIGHT);
-            win_center.scale(0.5 / TILE_SIZE);
-            camera_origin.sub(win_center);
-            Point2d pos = new Point2d(position);
-            pos.sub(camera_origin);
-            bufferGraphics.drawString(text, (int) Math.round(pos.getX()), (int) Math.round(pos.getY()));
+            if(!isFixed) {
+                Point2d camera_origin = new Point2d(Camera.getCameraInstance().getPosition());
+                Point2d win_center = new Point2d(WINDOW_WIDTH, WINDOW_HEIGHT);
+                win_center.scale(0.5 / TILE_SIZE);
+                camera_origin.sub(win_center);
+                Point2d pos = new Point2d(position);
+                pos.sub(camera_origin);
+                bufferGraphics.drawString(text, (int) Math.round(pos.getX()), (int) Math.round(pos.getY()));
+            } else {
+                bufferGraphics.drawString(text, (int) position.getX(), (int) position.getY());
+            }
+            
         }
     }
 
