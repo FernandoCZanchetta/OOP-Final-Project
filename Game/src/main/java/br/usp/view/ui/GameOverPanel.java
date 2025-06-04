@@ -17,39 +17,35 @@ import javax.swing.JPanel;
  *
  * @author Fernando
  */
-public class LevelChangePanel extends JPanel {
+public class GameOverPanel extends JPanel {
     
-    public LevelChangePanel(MainFrame mainFrame) {
+    public GameOverPanel(MainFrame mainFrame) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.DARK_GRAY);
         //TO-DO: DEIXAR BACKGOURND E TALS BONITO
 
-        JLabel label = LabelFactory.createLabel("Parabéns! Fase Completa!");
+        JLabel label = LabelFactory.createLabel("GAME OVER!");
                 
-        JButton nextLevelButton = ButtonFactory.createButton("Próxima Fase");
+        JButton retryButton = ButtonFactory.createButton("Recomeçar");
         JButton startButton = ButtonFactory.createButton("Novo Jogo");
 
-        JButton saveButton = ButtonFactory.createButton("Salvar Jogo");
         JButton loadButton = ButtonFactory.createButton("Carregar Jogo");
 
         JButton exitButton = ButtonFactory.createButton("Sair");
 
 
-        nextLevelButton.addActionListener(e -> mainFrame.startNextLevel());
+        retryButton.addActionListener(e -> mainFrame.retryLevel());
         startButton.addActionListener(e -> mainFrame.startGame());
-        saveButton.addActionListener(e -> mainFrame.saveGame());
         loadButton.addActionListener(e -> mainFrame.loadGame());
         exitButton.addActionListener(e -> System.exit(0));
 
         this.add(Box.createVerticalGlue());
         this.add(label);
         this.add(Box.createRigidArea(new Dimension(0, 70)));
-        this.add(nextLevelButton);
+        this.add(retryButton);
         this.add(Box.createRigidArea(new Dimension(0, 20)));
         this.add(startButton);
         this.add(Box.createRigidArea(new Dimension(0, 50)));
-        this.add(saveButton);
-        this.add(Box.createRigidArea(new Dimension(0, 20)));
         this.add(loadButton);
         this.add(Box.createRigidArea(new Dimension(0, 50)));
         this.add(exitButton);

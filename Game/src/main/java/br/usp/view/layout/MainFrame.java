@@ -9,6 +9,7 @@ import br.usp.model.level.LevelData;
 import br.usp.model.level.LevelLoader;
 import br.usp.model.level.LevelManager;
 import br.usp.view.GamePanel;
+import br.usp.view.ui.GameOverPanel;
 import br.usp.view.ui.LevelChangePanel;
 import br.usp.view.ui.MainMenuPanel;
 import br.usp.view.ui.PauseMenuPanel;
@@ -33,7 +34,8 @@ public class MainFrame extends JFrame {
     public static final String GAME_PANEL = "GAME";
     public static final String MENU_PANEL = "MENU";
     public static final String PAUSE_PANEL = "PAUSE";
-    public static final String LEVEL_CHANGE_PANEL = "LEVELCHANGE";
+    public static final String LEVEL_CHANGE_PANEL = "LEVEL_CHANGE";
+    public static final String GAME_OVER_PANEL = "GAME_OVER";
     
     public MainFrame() {
         super("Tile Maze Game");
@@ -46,6 +48,7 @@ public class MainFrame extends JFrame {
         cardPanel.add(new PauseMenuPanel(this), PAUSE_PANEL);
         cardPanel.add(new GamePanel(this), GAME_PANEL);
         cardPanel.add(new LevelChangePanel(this), LEVEL_CHANGE_PANEL);
+        cardPanel.add(new GameOverPanel(this), GAME_OVER_PANEL);
 
         this.setContentPane(cardPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,7 +62,14 @@ public class MainFrame extends JFrame {
         layout.show(cardPanel, name);
     }
 
-    public void startGame() { //AJEITAR ESSE START GAME PROVAVELEMENTE
+    public void startGame() {
+        engine.setCurrentLevel(1);
+        String nextMap = String.format("map%02d", engine.getCurrentLevel());
+        
+        LevelData nextLevelData = LevelManager.getMapData(nextMap);
+        
+        engine.nextGame(nextLevelData);
+        
         for (Component comp : cardPanel.getComponents()) {
             if (comp instanceof GamePanel) {
                 cardPanel.remove(comp);
@@ -88,6 +98,31 @@ public class MainFrame extends JFrame {
         } else {
             System.out.println("Não há mais fases!");
         }
+        
+        for (Component comp : cardPanel.getComponents()) {
+            if (comp instanceof GamePanel) {
+                cardPanel.remove(comp);
+                break;
+            }
+        }
+        
+        GamePanel newGamePanel = new GamePanel(this);
+        cardPanel.add(newGamePanel, GAME_PANEL);
+        
+        this.showPanel(GAME_PANEL);
+        
+        newGamePanel.setFocusable(true);
+        newGamePanel.requestFocusInWindow();
+    }
+    
+    public void retryLevel() {
+        String currentLevelMap = String.format("map%02d", engine.getCurrentLevel());
+        
+        LevelData nextLevelData = LevelManager.getMapData(currentLevelMap);
+        
+
+        engine.nextGame(nextLevelData);
+
         
         for (Component comp : cardPanel.getComponents()) {
             if (comp instanceof GamePanel) {
