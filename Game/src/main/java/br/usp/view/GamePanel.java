@@ -14,10 +14,11 @@ import br.usp.model.items.ItemMap;
 import br.usp.model.map.Tile;
 import br.usp.model.map.TileMap;
 import static br.usp.util.GameConstants.*;
+import br.usp.view.hud.HUDRenderer;
 import br.usp.view.layout.MainFrame;
 import br.usp.view.render.SwingGraphicsAPI;
-//import br.usp.view.render.SwingGraphicsAPI;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
@@ -30,19 +31,14 @@ public class GamePanel extends JPanel {
     private final GameEngine engine = GameEngine.getGameEngineInstance();
     
     private final SwingGraphicsAPI graphicsAPI = new SwingGraphicsAPI();
+    private final HUDRenderer hudRenderer = new HUDRenderer();
     private final SwingInputAPI input;
     private final MainFrame mainframe;
     private final GameLoop loop;
-    //private final Graphics graphics;
-    //private final SwingGraphicsAPI swingGraphicsAPI;
     
     private long pauseCooldown = System.currentTimeMillis(); //REMOVER JUNTO COM O UPDATE E POR EM LUGAR MELHOR
   
-    public GamePanel(MainFrame mainframe) {
-        //graphics = new Graphics(engine);
-        //swingGraphicsAPI = new SwingGraphicsAPI();
-        //graphics.setGraphicsAPI(swingGraphicsAPI);
-        
+    public GamePanel(MainFrame mainframe) {        
         this.mainframe = mainframe;
         this.input = engine.getInput();
         
@@ -56,7 +52,7 @@ public class GamePanel extends JPanel {
     }
     
     @Override
-    protected void paintComponent(java.awt.Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
     
         BufferedImage buffer = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
@@ -84,6 +80,8 @@ public class GamePanel extends JPanel {
             
             entity.render(graphicsAPI);
         }        
+        
+        hudRenderer.render(graphicsAPI);
         
         bufferGraphics.dispose();
         
