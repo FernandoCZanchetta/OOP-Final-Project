@@ -76,7 +76,7 @@ public class Hero extends GameCharacter implements Renderable {
         }
     }
     
-    public void die() {
+    private void die() {
         System.out.println("Hero Morreu!");
         GameEngine.getGameEngineInstance().handleHeroDeath();
     }

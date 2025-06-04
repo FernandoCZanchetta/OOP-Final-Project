@@ -67,7 +67,6 @@ public class ItemMap {
                         currentItem = heart;
                     }
                 }
-                
 
                 MapRegion region = regionManager.getRegion(itemTile.getRegionId());
                 region.addItem(currentItem);
