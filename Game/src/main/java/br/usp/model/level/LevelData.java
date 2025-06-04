@@ -9,12 +9,12 @@ import br.usp.model.entity.EntityMap;
 import br.usp.model.entity.GameCharacter;
 import br.usp.model.items.Item;
 import br.usp.model.items.ItemMap;
-import br.usp.model.map.MapRegion;
+import br.usp.model.items.Key;
+import br.usp.model.map.Portal;
 import br.usp.model.map.Tile;
 import br.usp.model.map.TileMap;
 import br.usp.model.map.TileType;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +26,10 @@ import java.util.Map;
 public class LevelData implements SerializableObject {
     private int width;
     private int height;
+    private int currentLevel;
     private Integer[][] tiles;
     private Integer[][] regionIds;
+    private Map<String, Object> portalData;
     private List<Map<String, Object>> doorMetadata;
     private List<Map<String, Object>> itemData;
     private List<Map<String, Object>> entityData;
@@ -39,6 +41,10 @@ public class LevelData implements SerializableObject {
     public int getHeight() {
         return height;
     }
+    
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
 
     public Integer[][] getTiles() {
         return tiles;
@@ -46,6 +52,10 @@ public class LevelData implements SerializableObject {
 
     public Integer[][] getRegionIds() {
         return regionIds;
+    }
+    
+    public Map<String, Object> getPortalData() {
+        return portalData;
     }
     
     public List<Map<String, Object>> getDoorMetadata() {
@@ -70,6 +80,7 @@ public class LevelData implements SerializableObject {
 
         levelData.width = (int) data.get("width");
         levelData.height = (int) data.get("height");
+        levelData.currentLevel = (int) data.get("currentLevel");
 
         levelData.tiles = ((List<List<Integer>>) data.get("tiles"))
             .stream()
@@ -88,11 +99,12 @@ public class LevelData implements SerializableObject {
         return levelData;
     }
     
-    public static LevelData generateLevelData(TileMap tileMap, EntityMap entities, ItemMap items, int width, int height) {
+    public static LevelData generateLevelData(TileMap tileMap, EntityMap entities, ItemMap items, int width, int height, int currentLevel) {
         LevelData data = new LevelData();
         
         data.width = width;
         data.height = height;
+        data.currentLevel = currentLevel;
 
         // Serializa o grid de tiles
         Integer[][] tiles = new Integer[height][width];
@@ -103,6 +115,7 @@ public class LevelData implements SerializableObject {
                 case FLOOR -> 0;
                 case WALL -> 1;
                 case DOOR -> 2;
+                case PORTAL -> 3;
                 default -> 0;
             };
         }
@@ -126,6 +139,17 @@ public class LevelData implements SerializableObject {
         }
 
         data.regionIds = regionMatrix;
+        
+        // Serializa o portal
+        Map<String, Object> portalInfo = new HashMap<>();
+        for (Tile tile : tileMap.getTiles()) {
+            if (tile.getType() == TileType.PORTAL) {
+                portalInfo = tile.serialize();
+                
+                break;
+            }
+        }
+        data.portalData = portalInfo;
         
         // Serializa as portas (se tiver portaMetadata separado)
         List<Map<String, Object>> doorData = new ArrayList<>();

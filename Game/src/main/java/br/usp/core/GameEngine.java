@@ -16,6 +16,7 @@ import br.usp.model.items.Key;
 import br.usp.model.level.LevelData;
 import br.usp.model.level.LevelManager;
 import br.usp.model.map.MapRegionManager;
+import br.usp.model.map.Portal;
 import br.usp.model.map.Tile;
 import br.usp.model.map.TileMap;
 import br.usp.model.map.TileType;
@@ -47,6 +48,7 @@ public class GameEngine {
     private Hero hero;
     
     private final GameTime gameTime;
+    private int currentLevel = 1;
     private int map_width;
     private int map_height;
     
@@ -73,6 +75,7 @@ public class GameEngine {
         SpriteManager.loadSprite("wall", "sprites/tiles/wall.png");
         SpriteManager.loadSprite("floor", "sprites/tiles/floor.png");
         SpriteManager.loadSprite("door", "sprites/tiles/door.png");
+        SpriteManager.loadSprite("portal", "sprites/tiles/portal.png");
         
         /*Keys' Sprites*/
         SpriteManager.loadSprite("yellow_key", "sprites/keys/yellow_key.png");
@@ -110,7 +113,7 @@ public class GameEngine {
         startGame();
     }
     
-    public void load(LevelData data) {
+    public void loadMap(LevelData data) {
         this.mapData = data;
         
         this.tileMap = new TileMap(new Dimension(mapData.getWidth(), mapData.getHeight()));
@@ -120,6 +123,32 @@ public class GameEngine {
         
         this.map_width = mapData.getWidth();
         this.map_height = mapData.getHeight();
+        
+        this.tileMap.loadFromData(mapData, mapRegionManager);
+        this.itemMap.loadFromData(mapData, tileMap, mapRegionManager);
+        this.entityMap.loadFromData(mapData, tileMap, mapRegionManager);
+        
+        // Atualiza a instância do hero
+        this.hero = Hero.getHeroInstace();
+        
+        this.input = new SwingInputAPI();
+        this.camera = new Camera(this.map_width, this.map_height);
+        
+        // FUTURAMENTE GUARDAR O CRONOMETRO JUNTO NO LEVEL
+        startGame();
+    }
+    
+    public void loadSave(LevelData data) {
+        this.mapData = data;
+        
+        this.tileMap = new TileMap(new Dimension(mapData.getWidth(), mapData.getHeight()));
+        this.itemMap = new ItemMap();
+        this.entityMap = new EntityMap();
+        this.mapRegionManager = new MapRegionManager();
+        
+        this.map_width = mapData.getWidth();
+        this.map_height = mapData.getHeight();
+        this.currentLevel = mapData.getCurrentLevel();
         
         this.tileMap.loadFromData(mapData, mapRegionManager);
         this.itemMap.loadFromData(mapData, tileMap, mapRegionManager);
@@ -157,7 +186,12 @@ public class GameEngine {
     public void loadGame(LevelData data) {
         this.gameState = GameState.RUNNING;
         // VOLTAR POSICAO DO TIMER ANTERIOR SE DER
-        load(data);
+        loadSave(data);
+    }
+    
+    public void nextGame(LevelData data) {
+        this.gameState = GameState.RUNNING;
+        loadMap(data);
     }
     
     public void resetGame() {
@@ -198,16 +232,28 @@ public class GameEngine {
         was_escape_pressed = input.getKeyPressed(KeyEvent.VK_ESCAPE);
         
         for(Tile t : tileMap.getTiles()) {
-            if(t.getType() == TileType.WALL) {
-                hero.checkCharacterCollision(t);
-            } else if(t.getType() == TileType.DOOR) {
-                if(hero.checkCharacterCollision(t)) {
-                    if(hero.hasKeyFor(t.getKeyId())) {
-                        t.changeType(TileType.FLOOR);
-                        MapRegionManager.getMapRegionManagerInstance().unlockRegion(t.getKeyId());
-                    } 
-                }
-                
+            if(null != t.getType()) switch (t.getType()) {
+                case WALL:
+                    hero.checkCharacterCollision(t);
+                    break;
+                case DOOR:
+                    if(hero.checkCharacterCollision(t)) {
+                        if(hero.hasKeyFor(t.getKeyId())) {
+                            t.changeType(TileType.FLOOR);
+                            MapRegionManager.getMapRegionManagerInstance().unlockRegion(t.getKeyId());
+                        }
+                    }   break;
+                case PORTAL:
+                    if(hero.checkCharacterCollision(t)) {
+                        if(hero.canActivatePortal(((Portal) t).getRequiredKeys())) {
+                            this.gameState = GameState.LEVEL_COMPLETE;
+                            this.getMainFrame().showPanel(MainFrame.LEVEL_CHANGE_PANEL);
+                        } else {
+                            System.out.println("Hero não tem todas as chaves necessárias!");
+                        }
+                    }   break;
+                default:
+                    break;
             }
         }
         
@@ -264,6 +310,14 @@ public class GameEngine {
     
     public GameTime getGameTime() {
         return gameTime;
+    }
+    
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+    
+    public void setCurrentLevel(int newCurrentLevel) {
+        this.currentLevel = newCurrentLevel;
     }
 
     public int getMapWidth() {

@@ -4,16 +4,10 @@
  */
 package br.usp.model.level;
 
-import br.usp.model.entity.GameCharacter;
-import br.usp.model.items.Item;
-import br.usp.model.level.LevelData;
-import br.usp.model.map.TileMap;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  *
