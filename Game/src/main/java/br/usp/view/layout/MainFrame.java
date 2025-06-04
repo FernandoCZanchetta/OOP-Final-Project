@@ -10,6 +10,7 @@ import br.usp.model.level.LevelLoader;
 import br.usp.model.level.LevelManager;
 import br.usp.view.GamePanel;
 import br.usp.view.ui.CreditsPanel;
+import br.usp.view.ui.DebuggerPanel;
 import br.usp.view.ui.GameFinalPanel;
 import br.usp.view.ui.GameOverPanel;
 import br.usp.view.ui.LevelChangePanel;
@@ -40,6 +41,7 @@ public class MainFrame extends JFrame {
     public static final String GAME_OVER_PANEL = "GAME_OVER";
     public static final String CREDITS_PANEL = "CREDITS";
     public static final String GAME_FINAL_PANEL = "GAME_FINAL";
+    public static final String DEBUGGER_PANEL = "DEBUGGER";
     
     public MainFrame() {
         super("Tile Maze Game");
@@ -55,6 +57,7 @@ public class MainFrame extends JFrame {
         cardPanel.add(new GameOverPanel(this), GAME_OVER_PANEL);
         cardPanel.add(new CreditsPanel(this), CREDITS_PANEL);
         cardPanel.add(new GameFinalPanel(this), GAME_FINAL_PANEL);
+        cardPanel.add(new DebuggerPanel(this), DEBUGGER_PANEL);
 
         this.setContentPane(cardPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -205,7 +208,7 @@ public class MainFrame extends JFrame {
             }
         }
     }
-    
+        
     public void returnToMenu() {
         showPanel(MENU_PANEL);
     }
