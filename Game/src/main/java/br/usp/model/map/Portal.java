@@ -4,11 +4,7 @@
  */
 package br.usp.model.map;
 
-import br.usp.model.SerializableObject;
-import br.usp.model.items.ItemFactory;
-import br.usp.model.items.Key;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;

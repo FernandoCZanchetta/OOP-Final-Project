@@ -4,7 +4,6 @@
  */
 package br.usp.model.level;
 
-import br.usp.model.level.LevelData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Files;

@@ -13,7 +13,6 @@ import javax.swing.Timer;
  */
 public class GameLoop {
     private final Timer timer;
-    private final GameEngine engine = GameEngine.getGameEngineInstance();
     private final JComponent panel;
     
     public GameLoop(GameEngine engine, JComponent panel, int fps) {

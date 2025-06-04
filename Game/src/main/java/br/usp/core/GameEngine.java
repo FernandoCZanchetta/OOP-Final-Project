@@ -29,7 +29,6 @@ import br.usp.view.layout.MainFrame;
 import br.usp.view.render.Camera;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
-import java.io.File;
 import java.io.IOException;
 import javax.vecmath.Point2d;
 
@@ -75,7 +74,6 @@ public class GameEngine {
     }
     
     public void loadSprites() {
-        //ADICIONAR OUTRAS SPRITES AQUI E VER SE DÁ DE ANIMAR ELAS
         /*Game Character Sprites*/
         SpriteManager.loadSprite("hero_steady", "sprites/hero_steady.png");
         
@@ -105,7 +103,7 @@ public class GameEngine {
     
     public void run() {
         try {
-            LevelManager.preloadAllMaps("maps");                         //IMPLEMENTAR TROCAR OS MAPAS DE VEZ EM QUANDO
+            LevelManager.preloadAllMaps("maps");
         } catch (IOException ex) {
             System.out.println("Problema na leitura dos arquivos dos mapas!");
         }

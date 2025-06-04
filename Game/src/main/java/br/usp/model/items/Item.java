@@ -21,7 +21,7 @@ public abstract class Item extends GameObject {
     public Item(ItemType type, Point2d position) {
         super.position = position;
         this.type = type;
-        this.visible = true;    //VER SE VOU CONTROLAR ASSIM AS SPRITES
+        this.visible = true;
     }
 
     public ItemType getType() {

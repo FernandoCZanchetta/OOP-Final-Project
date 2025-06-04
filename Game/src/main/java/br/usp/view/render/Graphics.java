@@ -26,13 +26,8 @@ public class Graphics {
     public void update(int width, int height, java.awt.Graphics2D g) {
         graphicsAPI.createBuffer(width, height);
 
-        // Exemplo: desenha os objetos do jogo
-        //for (GameObject obj : game.getCurrentLevel().getGameObjects()) {
-        //    graphicsAPI.drawSprite(obj.getSprite(), obj.getPosition());
-        //}
-
         // Exemplo: desenha um retângulo fixo para debug
-        graphicsAPI.drawRect(new Point2d(20, 20), 20, 20, java.awt.Color.CYAN);
+        // graphicsAPI.drawRect(new Point2d(20, 20), 20, 20, java.awt.Color.CYAN);
 
         graphicsAPI.flushBuffer(g);
     }

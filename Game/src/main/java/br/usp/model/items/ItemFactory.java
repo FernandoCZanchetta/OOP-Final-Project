@@ -18,7 +18,7 @@ public class ItemFactory {
 
         return switch (type) {
             case KEY -> Key.deserialize(data);
-            //case HEART -> Heart.deserialize(data);
+            case HEART -> Heart.deserialize(data);
             //case CLOCK -> Clock.deserialize(data);
             default -> throw new IllegalArgumentException("Unknown item type: " + type);
         };

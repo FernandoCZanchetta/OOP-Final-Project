@@ -86,7 +86,7 @@ public abstract class GameCharacter extends GameObject implements SerializableOb
         }
         
         Point2d collision_vector = new Point2d(0, 0);
-        // Getting the smallest step to handle the collision from the 2 vectors AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        // Getting the smallest step to handle the collision from the 2 vectors
         Point2d collision_handling_vector = new Point2d();
         if (Math.abs(lcut_corner_diff.getX()) <= Math.abs(uclt_corner_diff.getX()))
           collision_handling_vector.setX(lcut_corner_diff.getX());

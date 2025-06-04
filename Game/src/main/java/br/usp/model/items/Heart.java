@@ -5,9 +5,6 @@
 package br.usp.model.items;
 
 import br.usp.core.GameEngine;
-import br.usp.view.SpriteManager;
-import br.usp.view.render.GraphicsAPI;
-import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
 import javax.vecmath.Point2d;
@@ -24,17 +21,6 @@ public class Heart extends Item {
     @Override
     public void update(GameEngine engine) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
-    @Override
-    public void render(GraphicsAPI g, ItemType type) {
-        if(!isVisible()) {
-            return;
-        }
-        
-        Image sprite = SpriteManager.getSprite("heart");
-        Point2d tilePos = new Point2d(this.getPosition().getX(), this.getPosition().getY());
-        g.drawSprite(sprite, tilePos);
     }
 
     @Override

@@ -4,7 +4,6 @@
  */
 package br.usp.model.map;
 
-import br.usp.model.entity.Enemy;
 import br.usp.model.entity.GameCharacter;
 import br.usp.model.items.Item;
 import java.util.ArrayList;

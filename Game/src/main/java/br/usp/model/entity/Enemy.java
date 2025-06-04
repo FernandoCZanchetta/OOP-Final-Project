@@ -18,7 +18,7 @@ public abstract class Enemy extends GameCharacter {
     protected int patrolProgress = 0;
     protected int patrolOrientation = 1;            // Forward 1, Backwards -1
     protected double moveTimer = 0;
-    protected double moveInterval;            // Segundos entre cada passo
+    protected double moveInterval;                  // Segundos entre cada passo
     
     public Enemy(Point2d position, int maxHp, int patrolLength, PatrolDirections direction, double moveInterval) {
         super(position, maxHp);

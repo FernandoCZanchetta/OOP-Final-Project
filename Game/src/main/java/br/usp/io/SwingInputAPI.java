@@ -105,17 +105,21 @@ public class SwingInputAPI extends JFrame implements InputAPI, KeyListener, Mous
     }
 
     // KeyListener
+    @Override
     public void keyPressed(KeyEvent e) {
         keyboard_map.put(e.getKeyCode(), true);
     }
 
+    @Override
     public void keyReleased(KeyEvent e) {
         keyboard_map.put(e.getKeyCode(), false);
     }
 
+    @Override
     public void keyTyped(KeyEvent e) {}
 
     // MouseListener
+    @Override
     public void mousePressed(MouseEvent e) {
         switch (e.getButton()) {
             case MouseEvent.BUTTON3: {
@@ -130,6 +134,7 @@ public class SwingInputAPI extends JFrame implements InputAPI, KeyListener, Mous
         }
     }
 
+    @Override
     public void mouseReleased(MouseEvent e) {
         switch (e.getButton()) {
             case MouseEvent.BUTTON3: {
@@ -144,8 +149,13 @@ public class SwingInputAPI extends JFrame implements InputAPI, KeyListener, Mous
         }
     }
 
+    @Override
     public void mouseEntered(MouseEvent e) {}
+    
+    @Override
     public void mouseExited(MouseEvent e) {}
+    
+    @Override
     public void mouseClicked(MouseEvent e) {}
 
     // MouseMotionListener
@@ -181,6 +191,7 @@ public class SwingInputAPI extends JFrame implements InputAPI, KeyListener, Mous
         dtde.dropComplete(false);
     }
 
+    @Override
     public void dragEnter(java.awt.dnd.DropTargetDragEvent dtde) {
         if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
             dtde.acceptDrag(DnDConstants.ACTION_MOVE);
@@ -188,9 +199,13 @@ public class SwingInputAPI extends JFrame implements InputAPI, KeyListener, Mous
             dtde.rejectDrag();
         }   
     }
+    @Override
     public void dragOver(java.awt.dnd.DropTargetDragEvent dtde) {
         dragEnter(dtde);
     }
+    @Override
     public void dropActionChanged(java.awt.dnd.DropTargetDragEvent dtde) {}
+    
+    @Override
     public void dragExit(java.awt.dnd.DropTargetEvent dte) {}
 }

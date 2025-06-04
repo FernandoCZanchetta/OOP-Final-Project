@@ -21,12 +21,9 @@ public class TileMap {
 
     public TileMap(Dimension d) {
         this.d = d;
-        this.tiles = new ArrayList<>(); //VER SE VOU USAR UM LIMITE MAXIMO COMO ESTA NAS CONST OU SE VAI SER LIVRE (LEMBRAR Q TEM LIMITE NO POS)
-
-        //TO-DO: IMPLEMENTAR UM MAPA DECENTE!!!!!!!!!!!!!!!!!!!
+        this.tiles = new ArrayList<>(); 
         
-        generateSampleMap(); //Teste
-
+        //generateSampleMap(); // Descomentar para Implementar Mapa de Teste
     }
 
     public void loadFromData(LevelData data, MapRegionManager regionManager) {

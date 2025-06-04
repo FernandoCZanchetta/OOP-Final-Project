@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.vecmath.Point2d;
 
 /**
  *
@@ -78,7 +77,6 @@ public class LevelManager {
                 case "KEY" -> Key.deserialize(data);
                 case "HEART" -> Heart.deserialize(data);
                 case "MELEE" -> MeleeEnemy.deserialize(data);
-                // Adicionar mais
                 default -> {
                     System.err.println("Tipo desconhecido: " + type);
                     yield null;
@@ -87,7 +85,6 @@ public class LevelManager {
 
         } catch (IOException e) {
             System.err.println("Erro ao ler JSON: " + e.getMessage());
-            e.printStackTrace();
         }
         
         return null;

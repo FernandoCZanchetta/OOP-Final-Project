@@ -35,8 +35,6 @@ public class GamePanel extends JPanel {
     private final SwingInputAPI input;
     private final MainFrame mainframe;
     private final GameLoop loop;
-    
-    private long pauseCooldown = System.currentTimeMillis(); //REMOVER JUNTO COM O UPDATE E POR EM LUGAR MELHOR
   
     public GamePanel(MainFrame mainframe) {        
         this.mainframe = mainframe;

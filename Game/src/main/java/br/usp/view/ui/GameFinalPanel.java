@@ -5,7 +5,6 @@
 package br.usp.view.ui;
 
 import br.usp.view.layout.MainFrame;
-import static br.usp.view.layout.MainFrame.CREDITS_PANEL;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.Box;

@@ -5,7 +5,6 @@
 package br.usp.io;
 
 import br.usp.core.GameEngine;
-import br.usp.model.GameObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

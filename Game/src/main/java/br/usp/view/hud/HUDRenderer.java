@@ -97,13 +97,13 @@ public class HUDRenderer implements Renderable {
         int totalWidth = iconSize + 8 + textWidth;
 
         int x = (frameWidth - totalWidth) / 2;
-        int y = 10 + metrics.getAscent();  // Y para alinhar com topo
+        int y = 10 + metrics.getAscent();
 
-        // Sombra do texto (levemente deslocada)
+        // Sombra do texto
         Color shade_color = Color.BLACK;
         g.drawText(timeText, new Point2d(x + iconSize + 9, y + 1), shade_color, font, true);
 
-        // Texto branco sobre a sombra
+        // Texto sobre a sombra
         Color text_color = Color.WHITE;
         g.drawText(timeText, new Point2d(x + iconSize + 8, y), text_color, font, true);
 
@@ -116,7 +116,7 @@ public class HUDRenderer implements Renderable {
     
     public boolean shouldBlinkHearts() {
         long elapsed = System.currentTimeMillis() - hero.getLastDamageTime();
-        return elapsed < HEART_BLINK_DURATION_MS && (elapsed / 200) % 2 == 0; // pisca a cada 200ms
+        return elapsed < HEART_BLINK_DURATION_MS && (elapsed / 200) % 2 == 0; // Pisca a cada 200ms
     }
     
     @Override
