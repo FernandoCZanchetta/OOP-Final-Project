@@ -68,6 +68,7 @@ public class Tile extends GameObject {
             case WALL -> "wall";
             case FLOOR -> "floor";
             case DOOR -> "door";
+            case PORTAL -> "portal";
             default -> "null";
         };
         

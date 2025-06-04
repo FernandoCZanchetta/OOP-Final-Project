@@ -12,6 +12,5 @@ public enum TileType {
     FLOOR,
     WALL,
     DOOR,
-    HEART,
-    MAP,
+    PORTAL
 }

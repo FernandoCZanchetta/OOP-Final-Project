@@ -56,6 +56,22 @@ public class Hero extends GameCharacter implements Renderable {
         
         return false;
     }
+    
+    public boolean canActivatePortal(Set<String> necessaryKeys) {
+        Set<String> inventoryKeysString = new HashSet<>();
+        
+        for(GameObject go : inventory) {
+            if(go instanceof Key k) {
+                inventoryKeysString.add(k.getUnlocksRegionId());
+            }
+        }
+        
+        if(inventoryKeysString.containsAll(necessaryKeys)) {
+            return true;
+        }
+        
+        return false;
+    }
 
     @Override
     public boolean isVisible() {

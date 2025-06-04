@@ -37,12 +37,16 @@ public class TileMap {
                     case 0 -> TileType.FLOOR;
                     case 1 -> TileType.WALL;
                     case 2 -> TileType.DOOR;
-                    case 3 -> TileType.HEART;
-                    case 4 -> TileType.MAP;
+                    case 3 -> TileType.PORTAL;
                     default -> TileType.FLOOR;
                 };
                 
-                Tile tile = new Tile(type, new Point2d(x, y));
+                Tile baseTile = new Tile(type, new Point2d(x, y));
+                
+                Tile tile = switch(type) {
+                    case PORTAL -> new Portal(baseTile);
+                    default -> baseTile;
+                };
                 
                 int regionId = data.getRegionIds()[y][x];
                 
@@ -83,12 +87,21 @@ public class TileMap {
                         if (tile.getType() == TileType.DOOR) {
                             currentLockedRegions.add(regionManager.getRegion(keyId));
                             tile.changeKeyId(keyId); // Armazena o ID da chave nessa porta
+                            
+                            // Procura o portal para avisar sobre a chave
+                            for (Tile tileeee : tiles) {
+                                if (tileeee instanceof Portal p) {
+                                    p.addRequiredKey(keyId);
+                                    break;
+                                }
+                            }
+                            
                         } else {
                             System.out.println("Aviso: metadado de porta em tile que não é DOOR (" + x + "," + y + ")");
                         }
                         break;
                     }
-                }
+                }  
             }
             
             for (MapRegion region : regionManager.getAllRegions()) {
