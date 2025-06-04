@@ -9,6 +9,7 @@ import br.usp.model.level.LevelData;
 import br.usp.model.level.LevelLoader;
 import br.usp.model.level.LevelManager;
 import br.usp.view.GamePanel;
+import br.usp.view.ui.LevelChangePanel;
 import br.usp.view.ui.MainMenuPanel;
 import br.usp.view.ui.PauseMenuPanel;
 import java.awt.CardLayout;
@@ -32,6 +33,7 @@ public class MainFrame extends JFrame {
     public static final String GAME_PANEL = "GAME";
     public static final String MENU_PANEL = "MENU";
     public static final String PAUSE_PANEL = "PAUSE";
+    public static final String LEVEL_CHANGE_PANEL = "LEVELCHANGE";
     
     public MainFrame() {
         super("Tile Maze Game");
@@ -43,6 +45,7 @@ public class MainFrame extends JFrame {
         cardPanel.add(new MainMenuPanel(this), MENU_PANEL);
         cardPanel.add(new PauseMenuPanel(this), PAUSE_PANEL);
         cardPanel.add(new GamePanel(this), GAME_PANEL);
+        cardPanel.add(new LevelChangePanel(this), LEVEL_CHANGE_PANEL);
 
         this.setContentPane(cardPanel);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,7 +59,7 @@ public class MainFrame extends JFrame {
         layout.show(cardPanel, name);
     }
 
-    public void startGame() {
+    public void startGame() { //AJEITAR ESSE START GAME PROVAVELEMENTE
         for (Component comp : cardPanel.getComponents()) {
             if (comp instanceof GamePanel) {
                 cardPanel.remove(comp);
@@ -74,6 +77,34 @@ public class MainFrame extends JFrame {
         newGamePanel.requestFocusInWindow();
     }
 
+    public void startNextLevel() {
+        engine.setCurrentLevel(engine.getCurrentLevel() + 1);
+        String nextMap = String.format("map%02d", engine.getCurrentLevel());
+        
+        LevelData nextLevelData = LevelManager.getMapData(nextMap);
+        
+        if(nextLevelData != null) {
+            engine.nextGame(nextLevelData);
+        } else {
+            System.out.println("Não há mais fases!");
+        }
+        
+        for (Component comp : cardPanel.getComponents()) {
+            if (comp instanceof GamePanel) {
+                cardPanel.remove(comp);
+                break;
+            }
+        }
+        
+        GamePanel newGamePanel = new GamePanel(this);
+        cardPanel.add(newGamePanel, GAME_PANEL);
+        
+        this.showPanel(GAME_PANEL);
+        
+        newGamePanel.setFocusable(true);
+        newGamePanel.requestFocusInWindow();
+    }
+    
     public void loadGame() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Carregar Jogo");
@@ -121,7 +152,8 @@ public class MainFrame extends JFrame {
                     engine.getEntityMap(), // Lista de GameCharacters
                     engine.getItemMap(),
                     engine.getMapWidth(),
-                    engine.getMapHeight()
+                    engine.getMapHeight(),
+                    engine.getCurrentLevel()
                 );
                 LevelManager.saveLevel(levelData, fileToSave.getAbsolutePath());
                 JOptionPane.showMessageDialog(null, "Jogo salvo com sucesso!");
