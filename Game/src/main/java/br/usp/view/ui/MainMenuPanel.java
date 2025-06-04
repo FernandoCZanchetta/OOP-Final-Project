@@ -5,6 +5,7 @@
 package br.usp.view.ui;
 
 import br.usp.view.layout.MainFrame;
+import static br.usp.view.layout.MainFrame.CREDITS_PANEL;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.Box;
@@ -25,19 +26,23 @@ public class MainMenuPanel extends JPanel {
         
         JButton startButton = ButtonFactory.createButton("Novo Jogo");
         JButton loadButton = ButtonFactory.createButton("Carregar Jogo");
+        JButton creditsButton = ButtonFactory.createButton("Créditos");
         JButton exitButton = ButtonFactory.createButton("Sair");
         //TO-DO: RANKING E NOVOS BOTÕES?
         //TO-DO: DEIXAR BOTÕES BONITOS (startButton.setBorder(new Border());) lá na FACTORY
 
         startButton.addActionListener(e -> mainFrame.startGame());
         loadButton.addActionListener(e -> mainFrame.loadGame());
+        creditsButton.addActionListener(e -> mainFrame.showPanel(MainFrame.CREDITS_PANEL));
         exitButton.addActionListener(e -> System.exit(0));
 
         this.add(Box.createVerticalGlue());
         this.add(startButton);
-        this.add(Box.createRigidArea(new Dimension(0, 20)));
+        this.add(Box.createRigidArea(new Dimension(0, 40)));
         this.add(loadButton);
-        this.add(Box.createRigidArea(new Dimension(0, 20)));
+        this.add(Box.createRigidArea(new Dimension(0, 40)));
+        this.add(creditsButton);
+        this.add(Box.createRigidArea(new Dimension(0, 30)));
         this.add(exitButton);
         this.add(Box.createVerticalGlue());
     }

@@ -24,7 +24,7 @@ public class GameOverPanel extends JPanel {
         this.setBackground(Color.DARK_GRAY);
         //TO-DO: DEIXAR BACKGOURND E TALS BONITO
 
-        JLabel label = LabelFactory.createLabel("GAME OVER!");
+        JLabel label = TextFactory.createLabel("GAME OVER!");
                 
         JButton retryButton = ButtonFactory.createButton("Recomeçar");
         JButton startButton = ButtonFactory.createButton("Novo Jogo");

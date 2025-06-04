@@ -5,6 +5,7 @@
 package br.usp.view.ui;
 
 import br.usp.view.layout.MainFrame;
+import static br.usp.view.layout.MainFrame.CREDITS_PANEL;
 import java.awt.Color;
 import java.awt.Dimension;
 import javax.swing.Box;
@@ -17,39 +18,36 @@ import javax.swing.JPanel;
  *
  * @author Fernando
  */
-public class LevelChangePanel extends JPanel {
+public class GameFinalPanel extends JPanel {
     
-    public LevelChangePanel(MainFrame mainFrame) {
+    public GameFinalPanel(MainFrame mainFrame) {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.DARK_GRAY);
         //TO-DO: DEIXAR BACKGOURND E TALS BONITO
 
-        JLabel label = TextFactory.createLabel("Parabéns! Fase Completa!");
+        JLabel label = TextFactory.createLabel("Parabéns! Você chegou ao final do jogo!");
                 
-        JButton nextLevelButton = ButtonFactory.createButton("Próxima Fase");
+        JButton creditsButton = ButtonFactory.createButton("Créditos");
+        
         JButton startButton = ButtonFactory.createButton("Novo Jogo");
 
-        JButton saveButton = ButtonFactory.createButton("Salvar Jogo");
         JButton loadButton = ButtonFactory.createButton("Carregar Jogo");
 
         JButton exitButton = ButtonFactory.createButton("Sair");
 
 
-        nextLevelButton.addActionListener(e -> mainFrame.startNextLevel());
+        creditsButton.addActionListener(e -> mainFrame.showPanel(MainFrame.CREDITS_PANEL));
         startButton.addActionListener(e -> mainFrame.startGame());
-        saveButton.addActionListener(e -> mainFrame.saveGame());
         loadButton.addActionListener(e -> mainFrame.loadGame());
         exitButton.addActionListener(e -> System.exit(0));
 
         this.add(Box.createVerticalGlue());
         this.add(label);
         this.add(Box.createRigidArea(new Dimension(0, 70)));
-        this.add(nextLevelButton);
-        this.add(Box.createRigidArea(new Dimension(0, 20)));
+        this.add(creditsButton);
+        this.add(Box.createRigidArea(new Dimension(0, 50)));
         this.add(startButton);
         this.add(Box.createRigidArea(new Dimension(0, 50)));
-        this.add(saveButton);
-        this.add(Box.createRigidArea(new Dimension(0, 20)));
         this.add(loadButton);
         this.add(Box.createRigidArea(new Dimension(0, 50)));
         this.add(exitButton);
