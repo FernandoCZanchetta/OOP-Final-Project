@@ -85,6 +85,11 @@ public class GameEngine {
         
         /*Enemies Sprites*/
         SpriteManager.loadSprite("melee_enemy", "sprites/enemies/melee_enemy.png");
+        
+        /*HUD Sprites*/
+        SpriteManager.loadSprite("heart_full", "sprites/hud/heart_full.png");
+        SpriteManager.loadSprite("heart_empty", "sprites/hud/heart_empty.png");
+        SpriteManager.loadSprite("clock", "sprites/hud/clock.png");
     }
     
     public void run() {
@@ -197,6 +202,11 @@ public class GameEngine {
     public void resetGame() {
         gameTime.reset();
         gameState = GameState.MAIN_MENU;
+    }
+    
+    public void handleHeroDeath() {
+        this.pauseGame();
+        this.getMainFrame().showPanel(MainFrame.GAME_OVER_PANEL);
     }
     
     public void update() {                      //THIS IS THE MAIN GAME LOOP
