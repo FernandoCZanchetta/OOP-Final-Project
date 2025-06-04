@@ -52,7 +52,8 @@
     ],
     "itemData": [
         { "type": "KEY", "x": 5, "y": 1, "regionId": "red" },
-        { "type": "KEY", "x": 1, "y": 7, "regionId": "blue" }
+        { "type": "KEY", "x": 1, "y": 7, "regionId": "blue" },
+        { "type": "HEART", "x": 1, "y": 8 }
     ],
     "entityData": [
         { "type": "HERO", "x": 1, "y": 1, "maxHp": 5 },
