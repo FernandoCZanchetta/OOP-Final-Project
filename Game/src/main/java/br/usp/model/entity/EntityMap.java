@@ -25,6 +25,14 @@ public class EntityMap {
         this.gameEntities = new ArrayList<>();
     }
 
+    public void addEntity(GameCharacter gc) {
+        if(gc instanceof Hero h && this.gameEntities.contains(h)) {
+            System.out.println("Não é possivel adicionar dois heróis!");
+            return;
+        }
+        this.gameEntities.add(gc);
+    }
+    
     public void loadFromData(LevelData data, TileMap map, MapRegionManager regionManager) {
         gameEntities.clear();
         

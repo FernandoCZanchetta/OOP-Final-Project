@@ -9,8 +9,6 @@ import br.usp.model.entity.EntityMap;
 import br.usp.model.entity.GameCharacter;
 import br.usp.model.items.Item;
 import br.usp.model.items.ItemMap;
-import br.usp.model.items.Key;
-import br.usp.model.map.Portal;
 import br.usp.model.map.Tile;
 import br.usp.model.map.TileMap;
 import br.usp.model.map.TileType;

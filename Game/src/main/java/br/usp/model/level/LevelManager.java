@@ -4,10 +4,16 @@
  */
 package br.usp.model.level;
 
+import br.usp.model.GameObject;
+import br.usp.model.entity.MeleeEnemy;
+import br.usp.model.items.Heart;
+import br.usp.model.items.Key;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
+import javax.vecmath.Point2d;
 
 /**
  *
@@ -51,5 +57,39 @@ public class LevelManager {
             LevelData save = LevelLoader.laodSave(path);
             saves.put(name, save);
         }
+    }
+    
+    public static GameObject parseObjectFromJSON(String jsonFilePath) {
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            // Carrega o JSON como um Map genérico
+            Map<String, Object> data = mapper.readValue(new File(jsonFilePath), Map.class);
+
+            System.out.println(data.keySet());
+            
+            String type = (String) data.get("type");
+            if (type == null) {
+                System.err.println("Erro: Campo 'type' ausente em " + jsonFilePath);
+                return null;
+            }
+            
+            return switch (type) {
+                case "KEY" -> Key.deserialize(data);
+                case "HEART" -> Heart.deserialize(data);
+                case "MELEE" -> MeleeEnemy.deserialize(data);
+                // Adicionar mais
+                default -> {
+                    System.err.println("Tipo desconhecido: " + type);
+                    yield null;
+                }
+            };
+
+        } catch (IOException e) {
+            System.err.println("Erro ao ler JSON: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return null;
     }
 }

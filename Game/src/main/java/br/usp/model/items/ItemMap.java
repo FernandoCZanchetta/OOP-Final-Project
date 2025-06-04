@@ -25,6 +25,10 @@ public class ItemMap {
         this.gameItems = new ArrayList<>();
     }
 
+    public void addItem (Item item) {
+        this.gameItems.add(item);
+    }
+    
     public void loadFromData(LevelData data, TileMap map, MapRegionManager regionManager) {
         gameItems.clear();
         
@@ -57,7 +61,11 @@ public class ItemMap {
                         gameItems.add(key);
                         currentItem = key;
                     }
-                    // Adicione outros tipos aqui se quiser (ex: HEART)
+                    case HEART -> {
+                        Heart heart = new Heart(ItemType.HEART, pos);
+                        gameItems.add(heart);
+                        currentItem = heart;
+                    }
                 }
                 
 
